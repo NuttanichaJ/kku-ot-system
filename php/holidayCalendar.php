@@ -118,7 +118,7 @@
     require_once 'config.php';
 
     
-    $sql_holiday = "SELECT HOLIDAY_DATE FROM ot_holiday";
+    $sql_holiday = "SELECT * FROM ot_holiday";
     
     date_default_timezone_set('asia/bangkok');
 
@@ -177,14 +177,15 @@
                 $counter = mysqli_num_rows($result);
                 
                 while($row = mysqli_fetch_array($result)){
-
+                    
                     //Check Today
                     if ($today == $date) {
                         $counter--;
                         if($date == $row['HOLIDAY_DATE']) {
-                            $week .= "<div class='holiday day mdi mdi-pocket' name='holiday' id='holiday'
+                            $week .= "<div class='holiday mdi mdi-pocket' name='holiday' id='holiday'
                             data-date='$date'
-
+                            data-canWork = '".$row['CAN_WORK']."'
+                            data-holidayDesc = '".$row['HOLIDAY_DESC']."'
                             onClick='return checkDelete();'
                             '>" . $day .  "</div>";
                             $counter++;
@@ -199,8 +200,10 @@
                     } else {
                         $counter--;
                         if($date == $row["HOLIDAY_DATE"]) {
-                            $week .= "<div class='holiday day' name='holiday' id='holiday'
+                            $week .= "<div class='holiday' name='holiday' id='holiday'
                             data-date='$date' 
+                            data-canWork = '".$row['CAN_WORK']."'
+                            data-holidayDesc = '".$row['HOLIDAY_DESC']."'
                             '>" . $day. "</div>";
                             $counter++;
                         } elseif($counter == 0) {

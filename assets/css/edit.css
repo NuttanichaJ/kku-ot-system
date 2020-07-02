@@ -58,11 +58,11 @@ body {
     padding: 10px 0;
     color: #df643f;
 }
-
 .days div {
     width: 14.28%;
     margin-bottom: 10px;
     padding: 10px 0;
+   
 }
 
 .today {
@@ -79,6 +79,7 @@ body {
 }
 
 .prev_date {
+    background-color: #fff;
     color: burlywood;
 }
 
@@ -112,7 +113,7 @@ body {
 }
 
 .cantWork {
-    color: cyan;
+    color: black;
 }
 
 .page-header p {

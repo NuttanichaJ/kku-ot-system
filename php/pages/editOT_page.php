@@ -59,8 +59,8 @@
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
 
+    <link rel="stylesheet" href="../../assets/css/edit.css">
 
-    <link rel="stylesheet" href="../../assets/css/editOT.css">
     <!-- Layout styles -->
     <link rel="stylesheet" href="../../assets/css/style.css" />
     <!-- End layout styles -->
@@ -85,7 +85,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="ot.php">
                         <i class="mdi mdi-file-document-box menu-icon"></i>
                         <span class="menu-title">จัดทำแบบทำงานนอกเวลา</span>
                     </a>
@@ -146,25 +146,33 @@
                                                 <label class="control-label" for="inputTitle">ID:</label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="txtOT_ID"
-                                                        class="form-control border border-secondary" value="<?php echo $row['OT_ID']; ?>" readonly>
+                                                        class="form-control border border-secondary"
+                                                        value="<?php echo $row['OT_ID']; ?>" readonly>
                                                 </div>
                                                 <label class="control-label"> &nbsp; &nbsp; ชื่อโครงการ:</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" name="txtProject_name" class="form-control border border-secondary" value="<?php echo $row['OT_NAME']; ?>" required>
+                                                    <input type="text" name="txtProject_name"
+                                                        class="form-control border border-secondary"
+                                                        value="<?php echo $row['OT_NAME']; ?>" required>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="form-group d-flex">
                                                 <label class="control-label">ชื่อผู้จัดทำโครงการ:</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" name="txtCreate_by" class="form-control border border-secondary" value="<?php echo $row['CREATE_BY']; ?>" required>
+                                                    <input type="text" name="txtCreate_by"
+                                                        class="form-control border border-secondary"
+                                                        value="<?php echo $row['CREATE_BY']; ?>" required>
                                                 </div>
-                                                 <label class="control-label">&nbsp; &nbsp; ลงนาม:</label>
+                                                <label class="control-label">&nbsp; &nbsp; ลงนาม:</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" name="signer" class="form-control border border-secondary" value="<?php echo $row['SIGNER']; ?>">
+                                                    <input type="text" name="signer"
+                                                        class="form-control border border-secondary"
+                                                        value="<?php echo $row['SIGNER']; ?>">
                                                 </div>
 
-                                                <button class="btn btn-light" type="submit" name="update_project">แก้ไข</button>
+                                                <button class="btn btn-light" type="submit"
+                                                    name="update_project">แก้ไข</button>
                                             </div>
                                         </form>
 
@@ -242,6 +250,132 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- modal: Add OT -->
+                                        <div id="addOT" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 id="myModalLabel">เพิ่ม</h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">×</button>
+                                                    </div>
+
+
+                                                    <div class="modal-body">
+                                                        <form class="form-horizontal" id="addEvent" action=""
+                                                            method="post" novalidate>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label"
+                                                                    for="inputTitle">วันที่:</label>
+                                                                <div class="col-sm-7">
+                                                                    <input type="text" id="datepick" name="datepick"
+                                                                        class="form-control" maxlength="32" value='เวลา'
+                                                                        readonly>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-5 control-label"
+                                                                    for="inputLocation">ชื่อ</label>
+                                                                <div class="col-sm-7">
+                                                                    <select class="selectpicker mdb-select md-form"
+                                                                        required>
+                                                                        <option value="" disabled="" selected="">
+                                                                        </option>
+                                                                        <option value="1">ชื่อ1</option>
+                                                                        <option value="2">ชื่อ2</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-4 control-label"
+                                                                    for="inputTitle">การเบิก</label>
+                                                                <div class="col-sm-7">
+                                                                    <select class="mdb-select md-form">
+                                                                        <option value="" disabled="" selected="">
+                                                                        </option>
+                                                                        <option value="1">รายวัน</option>
+                                                                        <option value="2">รายคาบ</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-3 control-label"
+                                                                    for="inputTitle">เวลาเข้า</label>
+                                                                <div class="col-sm-7"><input type="time"
+                                                                        class="form-control" maxlength="32"
+                                                                        style="font-size:16px;">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-3 control-label"
+                                                                    for="inputTitle">เวลาออก</label>
+                                                                <div class="col-sm-7"><input type="time"
+                                                                        class="form-control" maxlength="32">
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer addOT"><button type="button" id="addOT"
+                                                            name="addOT" class="btn btn-success">ตกลง</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End modal: Add OT-->
+
+
+                                        <!-- modal: Edit OT -->
+                                        <div id="editOT" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 id="myModalLabel">แก้ไข</h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">×</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr class="text-center">
+                                                                    <th>วันที่</th>
+                                                                    <th>เวลาเข้า</th>
+                                                                    <th>เวลาออก</th>
+                                                                    <th>การเบิก</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php 
+				        // if(count($userData)>0){
+					    //     $s	=	'';
+					    //     foreach($userData as $val){
+					    // 	    $s++;
+		            ?>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td><?php //echo $s;?></tdclass=>
+                                                                    <td><?php //echo $val['username'];?></tdass=>
+                                                                    <td><?php //echo $val['useremail'];?></td>
+                                                                </tr>
+                                                                <?php 
+					    // 	}
+					    // }else{
+					    // ?>
+                                                                <?php //} ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer editOT"><button type="button" id="editOT"
+                                                            name="editOT" class="btn btn-success">ตกลง</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End modal: Edit OT-->
                                     </div>
                                 </div>
                             </div>
@@ -262,6 +396,17 @@
         <script src="../../assets/js/hoverable-collapse.js"></script>
         <script src="../../assets/js/misc.js"></script>
         <!-- endinject -->
+        <script>
+            $('.day').click(function () {
+                //get data from date div (calendar.php)
+                var date = $(this).attr('data-date');
+                //set value to modal
+                $('#datepick').val(date);
+
+                $('#addOT').modal('show');
+            })
+
+        </script>
 
 </body>
 

@@ -4,7 +4,7 @@
 
     
 
-    $sql_holiday = "SELECT HOLIDAY_DATE FROM ot_holiday";
+    $sql_holiday = "SELECT HOLIDAY_DATE, CAN_WORK FROM ot_holiday";
     
     date_default_timezone_set('asia/bangkok');
 
@@ -67,8 +67,17 @@
                     //Check Today
                     if ($today == $date) {
                         $counter--;
-                        if($date == $row['HOLIDAY_DATE']) {
+                        if($date == $row['HOLIDAY_DATE'] && $row['CAN_WORK'] == 'Y') {
+
                             $week .= "<div class='holiday day mdi mdi-pocket' name='holiday' id='holiday'
+                            data-date='$date'
+
+                            onClick='return checkDelete();'
+                            '>" . $day .  "</div>";
+                            $counter++;
+
+                        } elseif ($date == $row['HOLIDAY_DATE'] && $row['CAN_WORK'] == 'N') {
+                            $week .= "<div class='cantWork mdi mdi-pocket' name='cantWork' id='cantWork'
                             data-date='$date'
 
                             onClick='return checkDelete();'
@@ -84,11 +93,18 @@
                     
                     } else {
                         $counter--;
-                        if($date == $row["HOLIDAY_DATE"]) {
+                        if($date == $row["HOLIDAY_DATE"] && $row['CAN_WORK'] == 'Y') {
                             $week .= "<div class='holiday day' name='holiday' id='holiday'
                             data-date='$date' 
                             '>" . $day. "</div>";
                             $counter++;
+
+                        } elseif ($date == $row['HOLIDAY_DATE'] && $row['CAN_WORK'] == 'N') {
+                            $week .= "<div class='cantWork' name='cantWork' id='cantWork'
+                            data-date='$date'
+                            >" . $day .  "</div>";
+                            $counter++;
+
                         } elseif($counter == 0) {
                             $week .= "<div class='day' name='date' id='date'
                             data-date='$date'

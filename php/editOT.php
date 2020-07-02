@@ -4,8 +4,6 @@
     //$ot_id = $project_name = $create_by = $sign = "";
 
     //UPDATE project
-   
-   
     if(isset($_POST['update_project'])) {
         
         $ot_id = $_POST["txtOT_ID"];

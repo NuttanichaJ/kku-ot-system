@@ -2,6 +2,9 @@
     session_start();
     require_once '../config.php';
     require_once '../holidayCalendar.php';
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -132,9 +135,55 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- modal: Add And Delete Holiday -->
+                                    <!-- modal: Edit OT -->
                                     <div id="editHoliday" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 id="myModalLabel">แก้ไขวันหยุด</h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">×</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <form class="form-horizontal" method="post" novalidate>
+                                                        
+                                                    <div class="form-group">
+                                                    <label class="col-sm-3 control-label">วันที่:</label>
+                                                    <div class="col-sm-7">
+                                                    <input type="text" id="datepick" name="datepick"
+                                                                    class="form-control" maxlength="32" value='เวลา' readonly>
+                                                    </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                    <label class="col-sm-3 control-label">หัวข้อ:</label>
+                                                    <input type="text" id="holiday_desc" name="holiday_desc"
+                                                                    class="form-control" maxlength="32" readonly>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                    <label class="col-sm-3 control-label">การเบิกจ่าย:</label>
+                                                       
+                                                    <input type="text" id="can_work" name="can_work"
+                                                                    class="form-control" maxlength="32" readonly>
+                                                    </div>
+
+                                                    </div>
+                                                    <div class="modal-footer editOT">
+                                            
+                                                    <button name='deleteholiday' id='deleteholiday' type='submit' 
+                                                                class="btn btn-danger">ลบ</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End modal: Edit OT-->
+                                    
+
+                                    <!-- modal: Add Holiday -->
+                                    <div id="addHoliday" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -167,22 +216,19 @@
                                                         </div>
                                                         <div class="form-group"><label class="col-sm-3 control-label"
                                                                 for="inputLocation">การเบิกจ่าย:</label>
+                                                                
                                                             <div class="col-sm-7">
-                                                                <select class="mdb-select md-form" name="can_work" required>
+                                                                <select class="mdb-select md-form" name="" required>
                                                                     <option value="Y">เบิกได้</option>
                                                                     <option value="N">เบิกไม่ได้</option>
                                                                 </select>
-                                                            </div>
-                                                            <div class="invalid-feedback">กรุณาเลือก
-                                                                    </div>
+                                                    </div>
                                                         </div>
                                                     
                                                         <div class="modal-footer">
                                                             <button name='addholiday' id='addholiday' type='submit' 
                                                                 class="btn btn-success">ตกลง</button>
 
-                                                            <button name='deleteholiday' id='deleteholiday'type='submit' 
-                                                                class="btn btn-danger">ลบ</button>
                                                         </div>
 
                                                         
@@ -193,6 +239,9 @@
                                         </div>
                                     </div>
                                     <!-- End modal: Add Holiday -->
+
+                                  
+                                    
                                 </div>
                             </div>
                         </div>
@@ -213,16 +262,39 @@
     <script src="../../assets/js/misc.js"></script>
     <!-- endinject -->
     <script>
+        
+        
+        $('.holiday').click(function(){
+            //get data from date div (calendar.php)
+            var date = $(this).attr('data-date');
+            var can_work = $(this).attr('data-canwork');
+            var holiday_desc = $(this).attr('data-holidaydesc');
+
+
+            if(can_work == 'Y') {
+                can_work = 'เบิกได้';
+            } else {
+                can_work = 'ไม่ได้';
+            }
+            //set value to modal
+            $('#datepick').val(date);
+            $('#can_work').val(can_work);
+            $('#holiday_desc').val(holiday_desc);
+            $('#editHoliday').modal('show');
+        })
+        
+        
         $('.day').click(function(){
             //get data from date div (calendar.php)
             var date = $(this).attr('data-date');
             //set value to modal
             $('#datepick').val(date);
 
-            $('#editHoliday').modal('show');
+            $('#addHoliday').modal('show');
         })
     
     </script>
+  
 </body>
 
 </html>
