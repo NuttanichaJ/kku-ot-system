@@ -158,17 +158,17 @@
 
                                                     <div class="form-group">
                                                     <label class="col-sm-3 control-label">หัวข้อ:</label>
+                                                    <div class="col-sm-7">
                                                     <input type="text" id="holiday_desc" name="holiday_desc"
                                                                     class="form-control" maxlength="32" readonly>
                                                     </div>
-
+                                                    </div>
                                                     <div class="form-group">
                                                     <label class="col-sm-3 control-label">การเบิกจ่าย:</label>
-                                                       
+                                                    <div class="col-sm-7">
                                                     <input type="text" id="can_work" name="can_work"
                                                                     class="form-control" maxlength="32" readonly>
                                                     </div>
-
                                                     </div>
                                                     <div class="modal-footer editOT">
                                             
@@ -180,6 +180,7 @@
                                             </div>
                                         </div>
                                         <!-- End modal: Edit OT-->
+                                                    </div>
                                     
 
                                     <!-- modal: Add Holiday -->
@@ -201,19 +202,20 @@
                                                         <label class="col-sm-3 control-label"
                                                                 for="inputTitle">วันที่:</label>
                                                             <div class="col-sm-7">
-                                                                <input type="text" id="datepick" name="datepick"
+                                                                <input type="text" id="date_pick" name="date_pick"
                                                                     class="form-control" maxlength="32" value='เวลา' readonly>
                                                             
                                                         </div>
+                                                    </div>
                                                         <div class="form-group">
                                                         <label class="col-sm-3 control-label"
                                                                 for="inputTitle">หัวข้อ:</label>
                                                             <div class="col-sm-7"><input type="text" id="holiday_desc" name="holiday_desc"
                                                                     class="form-control" maxlength="32" value="วันหยุด" required>
                                                             
-                                                            <div class="invalid-feedback">กรุณาใส่หัวข้อ
-                                                                    </div>
+                                        
                                                         </div>
+                                                    </div>
                                                         <div class="form-group"><label class="col-sm-3 control-label"
                                                                 for="inputLocation">การเบิกจ่าย:</label>
                                                                 
@@ -274,7 +276,7 @@
             if(can_work == 'Y') {
                 can_work = 'เบิกได้';
             } else {
-                can_work = 'ไม่ได้';
+                can_work = 'เบิกไม่ได้';
             }
             //set value to modal
             $('#datepick').val(date);
@@ -288,7 +290,7 @@
             //get data from date div (calendar.php)
             var date = $(this).attr('data-date');
             //set value to modal
-            $('#datepick').val(date);
+            $('#date_pick').val(date);
 
             $('#addHoliday').modal('show');
         })

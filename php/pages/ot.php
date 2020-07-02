@@ -276,7 +276,7 @@
                                                             <div class="form-group">
                                                                 <label class="sm-3  mr-2">ID:</label>
                                                                 <input type="text" name="txtOT_ID"
-                                                                    class="border border-secondary" size="4" value="<?php echo $_SESSION['ot_id']; ?>" disabled="disabled">
+                                                                    class="border border-secondary" size="4" value="<?php echo '1'; ?>" disabled="disabled">
                                                             </div>
 
                                                             <div class="form-group">

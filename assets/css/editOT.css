@@ -17,7 +17,8 @@ body {
         width: 50%;
     }
         .calendar .left-side tr th {
-            background-color: #a73728;
+            background: rgb(0,27,72);
+            background: linear-gradient(90deg, rgba(0,27,72,1) 0%, rgba(2,69,122,1) 100%);
             font-weight: lighter;
         }
     .calendar .right-side {
@@ -34,16 +35,19 @@ body {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background-color: #a73728;
+    background: rgb(0,27,72);
+    background: linear-gradient(90deg, rgba(0,27,72,1) 0%, rgba(2,69,122,1) 100%);
     color: #fff;
     padding: 40px 30px;
 }
 
 .weekends {
-    background-color: #94281a;
+    background: rgb(1,23,60);
+    background: linear-gradient(90deg, rgba(1,23,60,1) 0%, rgba(2,65,115,1) 100%);
     display: flex;
     color: #fff;
     padding: 7px 0;
+    
 }
 
 .weekends div {
@@ -56,7 +60,7 @@ body {
     flex-wrap: wrap;
     text-align: center;
     padding: 10px 0;
-    color: #df643f;
+    color: #1c2135;
 }
 
 .days div {
@@ -79,7 +83,7 @@ body {
 }
 
 .prev_date {
-    color: burlywood;
+    color: #c1cbd1;
 }
 
 #month {
@@ -108,11 +112,11 @@ body {
 
 
 .holiday {
-    color: blue;
+    color: #fc0000;
 }
 
 .cantWork {
-    color: cyan;
+    color: #c1cbd1;
 }
 
 .page-header p {

@@ -10754,6 +10754,7 @@ dl {
     font-weight: initial; }
     .table thead th i {
       margin-left: 0.325rem; }
+  
   .table th,
   .table td {
     vertical-align: middle;
@@ -10777,7 +10778,10 @@ dl {
   .table.apointment-table td img {
     width: 20px;
     height: 20px; }
-
+#table-data tr th {
+  background: rgb(0,27,72);
+  background: linear-gradient(90deg, rgba(0,27,72,1) 0%, rgba(2,69,122,1) 100%);
+}
 .custom-table thead th {
   font-weight: 700;
   font-size: 14px;
@@ -10887,7 +10891,7 @@ dl {
     padding-right: 16px;
     width: calc(100% - 260px);
     height: 60px;
-    background: #406d96;
+    background: black;
     position: relative; }
     @media (max-width: 991px) {
       .navbar .navbar-menu-wrapper {
@@ -11081,7 +11085,7 @@ dl {
 /* Sidebar */
 .sidebar {
   min-height: calc(100vh - 60px);
-  background: #d8e8e8;
+  background: #dfdfd2;
   font-family: 'Kanit' !important;
   font-weight: 400;
   padding: 0;

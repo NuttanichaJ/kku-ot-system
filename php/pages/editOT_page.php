@@ -59,7 +59,7 @@
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
 
-    <link rel="stylesheet" href="../../assets/css/edit.css">
+    <link rel="stylesheet" href="../../assets/css/editOT.css">
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="../../assets/css/style.css" />
@@ -132,7 +132,7 @@
                 <div class="content-wrapper">
                     <div class="page-header">
                         <h3 class="page-title">แก้ไขจัดทำแบบทำงานนอกเวลา</h3>
-                        <p>จำนวนเงินรวม 0 บาท</p>
+                        <p>จำนวนเงินรวม 620 บาท</p>
 
                     </div>
                     <!-- first row starts here -->
@@ -202,9 +202,9 @@
                                                                             data-target='#editOT'
                                                                             data-toggle='modal'></a>
                                                                     </td>
-                                                                    <td><?php //echo $s;?></tdclass=>
-                                                                    <td><?php //echo $val['username'];?></tdass=>
-                                                                    <td><?php //echo $val['useremail'];?></td>
+                                                                    <td><?php echo '100000'?></td>
+                                                                    <td><?php echo 'นายขอน แก่น'?></td>
+                                                                    <td><?php echo '620'?></td>
                                                                 </tr>
 
                                                             </tbody>
@@ -345,8 +345,8 @@
                                                                     <th>วันที่</th>
                                                                     <th>เวลาเข้า</th>
                                                                     <th>เวลาออก</th>
-                                                                    <th>การเบิก</th>
-
+                                                                   
+                                                                    <th></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -357,10 +357,18 @@
 					    // 	    $s++;
 		            ?>
                                                                 <tr>
-                                                                    <td></td>
-                                                                    <td><?php //echo $s;?></tdclass=>
-                                                                    <td><?php //echo $val['username'];?></tdass=>
-                                                                    <td><?php //echo $val['useremail'];?></td>
+                                                                    
+                                                                    <td><?php echo '2020-05-20';?></td>
+                                                                    <td><?php echo '16.30';?></td>
+                                                                    <td><?php echo '20.00';?></td>
+                                                                    <td><a class="mdi mdi-trash-can-outline" type="button" name="deleteDataOT"></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <td><?php echo '2020-07-02';?></td>
+                                                                    <td><?php echo '08.30';?></td>
+                                                                    <td><?php echo '16.30'?></td>
+                                                                    <td><a class="mdi mdi-trash-can-outline" type="button" name="deleteDataOT"></a></td>
                                                                 </tr>
                                                                 <?php 
 					    // 	}
