@@ -1,5 +1,5 @@
 <?php
-
+    
     require_once 'config.php';
     
     //DELETE project
@@ -16,6 +16,7 @@
     $ot_id = $create_by = $project_name = $create_date = "";
     
     if(isset($_POST["addproject"])) {
+        
         $ot_id = $_POST["txtOT_ID"];
         $project_name = trim($_POST["txtProject_name"]);
         $create_by = trim($_POST["txtCreate_by"]);
@@ -46,13 +47,13 @@
     //     mysqli_query($conn, $sqlInsert);
     // }
 
-    if(isset($_POST["btn-add"])) {
+    
         $sql_maxID = "SELECT MAX(OT_ID) as maxot_id FROM ot_project";
         $result_maxID = mysqli_query($conn, $sql_maxID);
         $row = mysqli_fetch_assoc($result_maxID);
         $_SESSION['newot_id']  = $row['maxot_id'] + 1;
-        echo $_SESSION['newot_id'];
-    }
+        
+    
 
 
 ?>

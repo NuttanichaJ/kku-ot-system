@@ -120,7 +120,7 @@
                                         <!-- Button trigger modal-->
                                         <div class="btn-select">
                                             <button type="button" name="btn-add" id="btn-add" method="POST" class="mdi mdi-plus btn btn-success"
-                                                data-toggle="modal" data-target="#modalAdd">
+                                                data-toggle="modal" data-target="#modalAdd" href="../editProject.php">
                                                 เพิ่มใหม่</button>
 
                                             <label class="select-branch mr-2"> สังกัด:</label>
@@ -135,7 +135,6 @@
 
                                         <?php
                                             
-
                                             if(isset($_POST["search"])) {
                                                 $search = trim($_POST["search"]);
                                                 $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project 
@@ -161,18 +160,19 @@
                                                         echo "<tbody>";
                         
                                                         while($row = mysqli_fetch_array($result)){
+                                                            
                                                             echo "<tr>";
                                                                 echo "<td>" . $row['OT_ID'] . "</td>";
                                                                 echo "<td>" . $row['OT_NAME'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_BY'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_DATE'] . "</td>";
                                                                 echo "<td align='center'>";
-                                                                    echo "<a href='../print.php?print=" . $row['OT_ID'] . "' data-toggle='modal'  data-target='#modalPrint' class='text-dark' ><i
+                                                                    echo "<a href='../print.php?print_id=" . $row['OT_ID'] . "' data-toggle='modal'  data-target='#modalPrint' class='text-dark' ><i
                                                                         class='mdi mdi-cloud-print-outline'></i>
                                                                         พิมพ์</a>";
                                                                 echo "</td>";
                                                                 echo " <td align='center'>";
-                                                                    echo "<a href='editOT.php?edit=" . $row['OT_ID'] . "' class='text-primary'><i
+                                                                    echo "<a href='editOT_page.php?edit_id=" . $row['OT_ID'] . "' class='text-primary' ><i
                                                                     class='mdi mdi-pencil'></i> แก้ไข</a> ";
                                                                     echo "|";
                                                                     echo " <a href='../editProject.php?deleteproject=" . $row['OT_ID'] . "' class='text-danger'
@@ -188,10 +188,6 @@
                                                     echo "<p class='lead'><em>No records were found.</em></p>";
                                                 }
                                             }
-
-                                            //Find max ot_id
-                                            
-    
                                             
                                         ?>
 
@@ -217,8 +213,11 @@
                                                                     for="inputTitle">ID:</label>
                                                                 <div class="col-sm-3">
                                                                     <input type="text" name="txtOT_ID"
-                                                                        class="form-control border border-secondary" value="<?php echo $_SESSION['newot_id']; ?>"
-                                                                        disabled="disabled">
+                                                                        class="form-control border border-secondary" value="<?php 
+                                                                        
+                                                                        echo $_SESSION['newot_id'];
+                                                                        ?>"
+                                                                        readonly>
 
                                                                 </div>
                                                             </div>
@@ -246,7 +245,7 @@
                                                             </div>
                                                             <!--Footer-->
                                                             <div class="modal-footer">
-                                                                <button href="server.php" class="btn btn-success"
+                                                                <button class="btn btn-success"
                                                                     type="submit" name="addproject">เพิ่ม</button>
                                                                 <button type="button" class="btn btn-outline-danger"
                                                                     data-dismiss="modal" id="close">ยกเลิก</button>
@@ -294,7 +293,7 @@
                                                                 </div>
                                                                 <div class="btn-print">
                                                                     <button class="printForm" type="button" id="btnPrintRegisTimeForm01">3.แบบสรุปวันปฏิบัติงานนอกเวลาราชการปกติ</button>
-                                                                </dav>
+                                                                </div>
                                                             </div>
 
                                                         </form>

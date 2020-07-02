@@ -1,7 +1,7 @@
 <?php 
     session_start();
     require_once '../config.php';
-    require_once '../calendar.php';
+    require_once '../holidayCalendar.php';
 ?>
 
 <!DOCTYPE html>
@@ -56,10 +56,10 @@
             </ul>
         </nav>
 
-        <!-- partial -->
+        
         <div class="container-fluid page-body-wrapper">
 
-            <!-- partial:../../partials/_navbar.html -->
+            
             <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <div class="navbar-menu-wrapper d-flex align-items-stretch">
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button"
@@ -84,11 +84,11 @@
                     </button>
                 </div>
             </nav>
-            <!-- partial -->
+           
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="page-header">
-                        <h3 class="page-title">จัดทำแบบทำงานนอกเวลา</h3>
+                        <h3 class="page-title">กำหนดวันหยุด</h3>
                     </div>
                     <!-- first row starts here -->
                     <div class="row">
@@ -125,7 +125,7 @@
                                                 <div class="days">
                                                     <?php
                                                         foreach ($weeks as $week) {
-                                                        echo $week;
+                                                            echo $week;
                                                         }
                                                     ?>
                                                 </div>
@@ -133,8 +133,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- modal: Add Holiday -->
-                                    <div id="addHoliday" class="modal fade" tabindex="-1" role="dialog"
+                                    <!-- modal: Add And Delete Holiday -->
+                                    <div id="editHoliday" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -146,24 +146,29 @@
 
 
                                                 <div class="modal-body">
-                                                    <form class="form-horizontal" id="editholiday" method="post" novalidate>
-                                                        <div class="date">
-                                                            <h5 class="text-center" name="date"></h5>
+                                                    <form class="form-horizontal" method="post" novalidate>
+                                                        
+                                                        <div class="form-group">
+                                                        <label class="col-sm-3 control-label"
+                                                                for="inputTitle">วันที่:</label>
+                                                            <div class="col-sm-7">
+                                                                <input type="text" id="datepick" name="datepick"
+                                                                    class="form-control" maxlength="32" value='เวลา' readonly>
+                                                            
                                                         </div>
-
-                                                        <div class="form-group"><label class="col-sm-3 control-label"
-                                                                for="inputTitle">หัวข้อ</label>
-                                                            <div class="col-sm-7"><input type="text" name="holiday_desc"
+                                                        <div class="form-group">
+                                                        <label class="col-sm-3 control-label"
+                                                                for="inputTitle">หัวข้อ:</label>
+                                                            <div class="col-sm-7"><input type="text" id="holiday_desc" name="holiday_desc"
                                                                     class="form-control" maxlength="32" value="วันหยุด" required>
-                                                            </div>
+                                                            
                                                             <div class="invalid-feedback">กรุณาใส่หัวข้อ
                                                                     </div>
                                                         </div>
                                                         <div class="form-group"><label class="col-sm-3 control-label"
-                                                                for="inputLocation">การเบิกจ่าย</label>
+                                                                for="inputLocation">การเบิกจ่าย:</label>
                                                             <div class="col-sm-7">
                                                                 <select class="mdb-select md-form" name="can_work" required>
-                                                                    <option value="" disabled="" selected=""></option>
                                                                     <option value="Y">เบิกได้</option>
                                                                     <option value="N">เบิกไม่ได้</option>
                                                                 </select>
@@ -171,12 +176,19 @@
                                                             <div class="invalid-feedback">กรุณาเลือก
                                                                     </div>
                                                         </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                            <button name='addholiday' id='addholiday' type='submit' 
+                                                                class="btn btn-success">ตกลง</button>
+
+                                                            <button name='deleteholiday' id='deleteholiday'type='submit' 
+                                                                class="btn btn-danger">ลบ</button>
+                                                        </div>
+
+                                                        
                                                     </form>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" name="addholiday"
-                                                        class="btn btn-success">ตกลง</button>
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +202,7 @@
         </div>
     </div>
 
-    <?php  mysqli_close($conn); ?>
+    
     <!-- plugins:js -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
@@ -200,9 +212,17 @@
     <script src="../../assets/js/hoverable-collapse.js"></script>
     <script src="../../assets/js/misc.js"></script>
     <!-- endinject -->
-    <!-- Custom js for this page -->
-    <!-- End custom js for this page -->
+    <script>
+        $('.day').click(function(){
+            //get data from date div (calendar.php)
+            var date = $(this).attr('data-date');
+            //set value to modal
+            $('#datepick').val(date);
 
+            $('#editHoliday').modal('show');
+        })
+    
+    </script>
 </body>
 
 </html>

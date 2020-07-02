@@ -2,15 +2,41 @@ body {
     font-family: 'Kanit' !important;
     font-size: 14px;
     margin: 0;
-  }
-  
+}
+.show_id {
+    font-size: 16px;
+}
+.show_id input {
+    border: none;
+    outline: 0px solid transparent;
+
+}
+
+
 .calendar {
     margin: auto;
-    width: 600px;
+    width: 100%;
     background-color: #fff;
     box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.2);
 }
 
+
+.left-side {
+        float: left;
+        width: 50%;
+    }
+        .calendar .left-side tr th {
+            background-color: #a73728;
+            font-weight: lighter;
+        }
+    .calendar .right-side {
+        float: right;
+        width: 50%;
+    }
+
+    .calendar .right-side .left-side {
+        height: 100%;
+    }
 
 .month {
     display: flex;
@@ -89,8 +115,6 @@ body {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-
-
 .date h5 {
     text-align: center;
     color: #df643f
@@ -101,20 +125,8 @@ body {
 }
 
 
-.calendar .left-side {
-    float: left;
-    width: 50%;
+.page-header p {
+    color: green;
+    
+    
 }
-    .calendar .left-side tr th {
-        background-color: #a73728;
-        font-weight: lighter;
-    }
-
-    .calendar .right-side {
-        float: right;
-        width: 50%;
-    }
-
-    .calendar .right-side .left-side {
-        height: 100%;
-    }
