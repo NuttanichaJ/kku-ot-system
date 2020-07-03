@@ -12,9 +12,6 @@
             $row = mysqli_fetch_array($result);
     }
 
-    
- 
-        
         //INSERT holiday
         $holiday_date = $holiday_desc = $can_work = $create_date = "";
     

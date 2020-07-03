@@ -1,8 +1,7 @@
 <?php 
     session_start();
     require_once '../config.php';
-    require_once '../editProject.php';
-    require_once '../print.php';
+    require_once '../otType.php';
 
 ?>
 
@@ -111,7 +110,7 @@
                                                                 <label>ค้นหา</label>
                                                                 <input type="text" name="search" id="search_text"
                                                                     class="form-control form-control-sm border border-secondary"
-                                                                    placeholder="ชื่อโครงการ/ผู้จัดทำรายการ">
+                                                                    placeholder="รูปแบบการเบิก/ผู้จัดทำรายการ">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -126,7 +125,7 @@
                                         <!-- Button trigger modal-->
                                         <div class="btn-select">
                                             <button type="button" name="btn-add" id="btn-add" method="POST" class="mdi mdi-plus btn btn-success"
-                                                data-toggle="modal" data-target="#modalAdd" href="../editProject.php">
+                                                data-toggle="modal" data-target="#modalAdd" href="../otType.php">
                                                 เพิ่มใหม่</button>
                                         </div>
 
@@ -134,10 +133,10 @@
                                             
                                             if(isset($_POST["search"])) {
                                                 $search = trim($_POST["search"]);
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project 
-                                                  WHERE OT_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT * FROM ot_type 
+                                                  WHERE OTTYPE_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
                                               } else {
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT * FROM ot_type ORDER BY CREATE_DATE DESC";
                                               }
                         
                                             if($result = mysqli_query($conn, $sql)) {
@@ -148,8 +147,10 @@
                                                             echo "<tr class='bg-primary text-white text-center'>";
                                                                 echo "<th>รหัส</th>";
                                                                 echo "<th>รูปแบบการเบิก</th>";
+                                                                echo "<th>ค่าล่วงเวลา</th>";
                                                                 echo "<th>ผู้จัดทำรายการ</th>";
                                                                 echo "<th>วันที่สร้างการเบิก</th>";
+                                                                
                                                                 echo "<th></th>";
                                                             echo "</tr>";
                                                         echo "</thead>";
@@ -158,16 +159,22 @@
                                                         while($row = mysqli_fetch_array($result)){
                                                             
                                                             echo "<tr>";
-                                                                echo "<td>" . $row['OT_ID'] . "</td>";
-                                                                echo "<td>" . $row['OT_NAME'] . "</td>";
+                                                                echo "<td>" . $row['OTTYPE_ID'] . "</td>";
+                                                                echo "<td>" . $row['OTTYPE_NAME'] . "</td>";
+                                                                echo "<td>" . $row['OTTYPE_RATE'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_BY'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_DATE'] . "</td>";
                                                                
                                                                 echo " <td align='center'>";
-                                                                    echo "<a type='button' id='edit' class='edit text-primary' ><i
+                                                                    echo "<a type='button' id='edit' class='edit text-primary' 
+                                                                    data-id=" . $row['OTTYPE_ID'] . "
+                                                                    data-name=" . $row['OTTYPE_NAME'] . "
+                                                                    data-rate=" . $row['OTTYPE_RATE'] . "
+                                                                    data-create-by=" . $row['CREATE_BY'] . "
+                                                                    ><i
                                                                     class='mdi mdi-pencil'></i> แก้ไข</a> ";
                                                                     echo "|";
-                                                                    echo " <a href='../editProject.php?deleteproject=" . $row['OT_ID'] . "' class='text-danger'
+                                                                    echo " <a name='deleteOttype' href='../otType.php?deleteOttype=" . $row['OTTYPE_ID'] . "' class='text-danger'
                                                                     onClick='return checkDelete();'><i
                                                                         class='mdi mdi-delete'></i> ลบ</a>";
                                                                 echo "</td>"; 
@@ -204,10 +211,10 @@
                                                                 <label class="col-sm-3 control-label"
                                                                     for="inputTitle">ID:</label>
                                                                 <div class="col-sm-3">
-                                                                    <input type="text" name="txtOT_ID"
-                                                                        class="form-control border border-secondary" value="3"<?php 
+                                                                    <input type="text" name="txtOT_TYPE_ID"
+                                                                        class="form-control border border-secondary" value="<?php 
                                                                         
-                                                                        echo '3';
+                                                                        echo $_SESSION['newottype_id'];;
                                                                         ?>"
                                                                         readonly>
 
@@ -217,7 +224,7 @@
                                                                     class="col-sm-3 control-label" for="inputLocation">
                                                                     รูปแบบการเบิก:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="txtProject_name"
+                                                                    <input type="text" name="txtOT_TYPE_NAME"
                                                                         class="form-control border border-secondary"
                                                                         required>
                                                                     <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
@@ -242,7 +249,7 @@
                                                                     class="col-sm-3 control-label" for="inputLocation">
                                                                     ค่าล่วงเวลา:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="txtProject_name"
+                                                                    <input type="text" name="otType_rate"
                                                                         class="form-control border border-secondary"
                                                                         required>
                                                                     <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
@@ -260,7 +267,7 @@
                                                             <!--Footer-->
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-success"
-                                                                    type="submit" name="addproject">เพิ่ม</button>
+                                                                    type="submit" name="add_ottype">เพิ่ม</button>
                                                                 <button type="button" class="btn btn-outline-danger"
                                                                     data-dismiss="modal" id="close">ยกเลิก</button>
                                                             </div>
@@ -290,12 +297,8 @@
                                                                 <label class="col-sm-3 control-label"
                                                                     for="inputTitle">ID:</label>
                                                                 <div class="col-sm-3">
-                                                                    <input type="text" name="txtOT_ID"
-                                                                        class="form-control border border-secondary" value="<?php 
-                                                                        
-                                                                        echo '3';
-                                                                        ?>"
-                                                                        readonly>
+                                                                    <input type="text" name="txtOT_TYPE_ID" id="txtOT_TYPE_ID"
+                                                                        class="form-control border border-secondary" readonly>
 
                                                                 </div>
                                                             </div>
@@ -303,9 +306,9 @@
                                                                     class="col-sm-3 control-label" for="inputLocation">
                                                                     รูปแบบการเบิก:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="txtProject_name"
+                                                                    <input type="text" name="txtOT_TYPE_NAME" id="txtOT_TYPE_NAME"
                                                                         class="form-control border border-secondary"
-                                                                        value='แบบรายวัน กรณีวันปกติ' required>
+                                                                        required>
                                                                     <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
                                                                     </div>
                                                                 </div>
@@ -313,10 +316,10 @@
                                                             <div class="form-group">
                                                                 <label class="col-sm-6 control-label"
                                                                     for="inputDate">ผู้จัดทำรายการ:</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="text" name="txtCreate_by"
+                                                                <div class="col-sm-10"> 
+                                                                    <input type="text" name="txtCreate_by" id="txtCreate_by"
                                                                         class="form-control border border-secondary"
-                                                                        value='นายกขค' required>
+                                                                        required>
                                                                     <div class="invalid-feedback">กรุณาใส่ชื่อผู้จัดทำ
                                                                     </div>
                                                                 </div>
@@ -328,9 +331,9 @@
                                                                     class="col-sm-3 control-label" for="inputLocation">
                                                                     ค่าล่วงเวลา:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="txtProject_name"
+                                                                    <input type="text" name="otType_rate" id="otType_rate"
                                                                         class="form-control border border-secondary"
-                                                                        value='200' required>
+                                                                        required>
                                                                     <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
                                                                     </div>
                                                                 
@@ -341,7 +344,7 @@
                                                             <!--Footer-->
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-warning"
-                                                                    type="submit" name="addproject">แก้ไข</button>
+                                                                    type="submit" name="edit_otType">แก้ไข</button>
                                                                 
                                                             </div>
                                                         </form>
@@ -422,11 +425,19 @@
 
     <script>
             $('.edit').click(function () {
-                //get data from date div (calendar.php)
-                //var date = $(this).attr('data-date');
-                //set value to modal
-                //$('#datepick').val(date);
+                //get data from edit
+                var ottype_id = $(this).attr('data-id');
+                var ottype_name = $(this).attr('data-name');
+                var ottype_rate = $(this).attr('data-rate');
+                var create_by = $(this).attr('data-create-by');
+                
+               //set value to modal
+                $('#txtOT_TYPE_ID').val(ottype_id);
+                $('#txtOT_TYPE_NAME').val(ottype_name);
+                $('#txtCreate_by').val(create_by);
+                $('#otType_rate').val(ottype_rate);
 
+                
                 $('#edit_otType').modal('show');
             })
 
