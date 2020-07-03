@@ -42,7 +42,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="ot.php">
                         <i class="mdi mdi-file-document-box menu-icon"></i>
                         <span class="menu-title">จัดทำแบบทำงานนอกเวลา</span>
                     </a>
@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="ot_type.php">
+                    <a class="nav-link" href="#">
                         <i class="mdi mdi-library-plus menu-icon"></i>
                         <span class="menu-title">กำหนดการเบิก</span>
                     </a>
@@ -94,7 +94,7 @@
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="page-header">
-                        <h3 class="page-title">จัดทำแบบทำงานนอกเวลา</h3>
+                        <h3 class="page-title">กำหนดการเบิก</h3>
                     </div>
                     <!-- first row starts here -->
                     <div class="row">
@@ -128,15 +128,6 @@
                                             <button type="button" name="btn-add" id="btn-add" method="POST" class="mdi mdi-plus btn btn-success"
                                                 data-toggle="modal" data-target="#modalAdd" href="../editProject.php">
                                                 เพิ่มใหม่</button>
-
-                                            <label class="select-branch mr-2"> สังกัด:</label>
-                                            <select class="mdb-select md-form">
-                                                <option value="" disabled selected>Choose your option</option>
-                                                <option value="1">Option 1</option>
-                                                <option value="2">Option 2</option>
-                                                <option value="3">Option 3</option>
-                                            </select>
-
                                         </div>
 
                                         <?php
@@ -156,10 +147,9 @@
                                                         echo "<thead>";
                                                             echo "<tr class='bg-primary text-white text-center'>";
                                                                 echo "<th>รหัส</th>";
-                                                                echo "<th>โครงการ</th>";
+                                                                echo "<th>รูปแบบการเบิก</th>";
                                                                 echo "<th>ผู้จัดทำรายการ</th>";
-                                                                echo "<th>วันที่สร้างโครงการ</th>";
-                                                                echo "<th>พิมพ์</th>";
+                                                                echo "<th>วันที่สร้างการเบิก</th>";
                                                                 echo "<th></th>";
                                                             echo "</tr>";
                                                         echo "</thead>";
@@ -172,13 +162,9 @@
                                                                 echo "<td>" . $row['OT_NAME'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_BY'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_DATE'] . "</td>";
-                                                                echo "<td align='center'>";
-                                                                    echo "<a href='../print.php?print_id=" . $row['OT_ID'] . "' data-toggle='modal'  data-target='#modalPrint' class='text-dark' ><i
-                                                                        class='mdi mdi-cloud-print-outline'></i>
-                                                                        พิมพ์</a>";
-                                                                echo "</td>";
+                                                               
                                                                 echo " <td align='center'>";
-                                                                    echo "<a href='editOT_page.php?edit_id=" . $row['OT_ID'] . "' class='text-primary' ><i
+                                                                    echo "<a type='button' id='edit' class='edit text-primary' ><i
                                                                     class='mdi mdi-pencil'></i> แก้ไข</a> ";
                                                                     echo "|";
                                                                     echo " <a href='../editProject.php?deleteproject=" . $row['OT_ID'] . "' class='text-danger'
@@ -204,7 +190,93 @@
                                                 <div class="modal-content">
                                                     <!--Header-->
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="myModalLabel">เพิ่มโครงการใหม่</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">เพิ่มการเบิกใหม่</h4>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <!--Body-->
+                                                    <div class="modal-body">
+                                                        <form class="needs-validation" id="addproject" method="POST"
+                                                            novalidate>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label"
+                                                                    for="inputTitle">ID:</label>
+                                                                <div class="col-sm-3">
+                                                                    <input type="text" name="txtOT_ID"
+                                                                        class="form-control border border-secondary" value="3"<?php 
+                                                                        
+                                                                        echo '3';
+                                                                        ?>"
+                                                                        readonly>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-3 control-label" for="inputLocation">
+                                                                    รูปแบบการเบิก:</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" name="txtProject_name"
+                                                                        class="form-control border border-secondary"
+                                                                        required>
+                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-6 control-label"
+                                                                    for="inputDate">ผู้จัดทำรายการ:</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" name="txtCreate_by"
+                                                                        class="form-control border border-secondary"
+                                                                        required>
+                                                                    <div class="invalid-feedback">กรุณาใส่ชื่อผู้จัดทำ
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                            
+                                                            <label
+                                                                    class="col-sm-3 control-label" for="inputLocation">
+                                                                    ค่าล่วงเวลา:</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" name="txtProject_name"
+                                                                        class="form-control border border-secondary"
+                                                                        required>
+                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                <label style="color: gray; padding-top: 8px;" 
+                                                                    class="col-sm-10 control-label" for="inputLocation">
+                                                                    กรณีแบบรายชั่วโมง กรุณาใส่เป็น บาท/ชั่วโมง</label>
+                                                                    <label style="color: gray;" 
+                                                                    class="col-sm-10 control-label" for="inputLocation">
+                                                                    กรณีแบบรายคาบ กรุณาใส่เป็น คาบ/ชั่วโมง</label>
+                                                            </div>
+
+                                                            <!--Footer-->
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-success"
+                                                                    type="submit" name="addproject">เพิ่ม</button>
+                                                                <button type="button" class="btn btn-outline-danger"
+                                                                    data-dismiss="modal" id="close">ยกเลิก</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+ <!-- Modal: Add new Project -->
+ <div class="modal fade" id="edit_otType" tabindex="-1" role="dialog"
+                                            aria-labelledby="modalLabel" aria-hidden="true" le="display: block;">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <!--Header-->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel">แก้ไขการเบิก</h4>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">×</span>
@@ -221,7 +293,7 @@
                                                                     <input type="text" name="txtOT_ID"
                                                                         class="form-control border border-secondary" value="<?php 
                                                                         
-                                                                        echo $_SESSION['newot_id'];
+                                                                        echo '3';
                                                                         ?>"
                                                                         readonly>
 
@@ -229,84 +301,55 @@
                                                             </div>
                                                             <div class="form-group"><label
                                                                     class="col-sm-3 control-label" for="inputLocation">
-                                                                    ชื่อโครงการ:</label>
+                                                                    รูปแบบการเบิก:</label>
                                                                 <div class="col-sm-10">
                                                                     <input type="text" name="txtProject_name"
                                                                         class="form-control border border-secondary"
-                                                                        required>
-                                                                    <div class="invalid-feedback">กรุณาใส่ชื่อโครงการ
+                                                                        value='แบบรายวัน กรณีวันปกติ' required>
+                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-sm-6 control-label"
-                                                                    for="inputDate">ชื่อผู้จัดทำโครงการ:</label>
+                                                                    for="inputDate">ผู้จัดทำรายการ:</label>
                                                                 <div class="col-sm-10">
                                                                     <input type="text" name="txtCreate_by"
                                                                         class="form-control border border-secondary"
-                                                                        required>
+                                                                        value='นายกขค' required>
                                                                     <div class="invalid-feedback">กรุณาใส่ชื่อผู้จัดทำ
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="form-group">
+                                                            
+                                                            <label
+                                                                    class="col-sm-3 control-label" for="inputLocation">
+                                                                    ค่าล่วงเวลา:</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" name="txtProject_name"
+                                                                        class="form-control border border-secondary"
+                                                                        value='200' required>
+                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                
+                                                            </div>
+
                                                             <!--Footer-->
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-success"
-                                                                    type="submit" name="addproject">เพิ่ม</button>
-                                                                <button type="button" class="btn btn-outline-danger"
-                                                                    data-dismiss="modal" id="close">ยกเลิก</button>
+                                                                <button class="btn btn-warning"
+                                                                    type="submit" name="addproject">แก้ไข</button>
+                                                                
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- Modal: Print -->
-                                        <div class="modal fade" id="modalPrint" tabindex="-1" role="dialog"
-                                            aria-labelledby="modalLabel" aria-hidden="true" le="display: block;">
-                                            <div class="modal-dialog print" role="document" >
-                                                <div class="modal-content">
-                                                    <!--Header-->
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="myModalLabel">พิมพ์รายงาน</h4>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <!--Body-->
-                                                    <div class="modal-body">
-                                                        <form class="needs-validation" id="print" method="POST"
-                                                            novalidate>
-                                                            <div class="form-group">
-                                                                <label class="sm-3  mr-2">ID:</label>
-                                                                <input type="text" name="txtOT_ID"
-                                                                    class="border border-secondary" size="4" value="<?php echo '1'; ?>" disabled="disabled">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label class="select-branch mr-2">ประจำเดือน:</label>
-                                                                <input type="date" name="print_todate"
-                                                                    value="<?php echo date("Y-m-d");?>">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="btn-print">
-                                                                    <button class="printForm" type="button" id="btnPrintRegisTimeForm01">1.บัญชีเวลาการปฏิบัติงานนอกเวลาราชการปกติ</button>
-                                                                </div>
-                                                                <div class="btn-print">
-                                                                    <button class="printForm" type="button" id="btnPrintRegisTimeForm01">2.หลักฐานการจ่ายเงินตอบแทนการปฏิบัติงานนอกเวลาราชการปกติ(ใบฟ้า)</button>
-                                                                </div>
-                                                                <div class="btn-print">
-                                                                    <button class="printForm" type="button" id="btnPrintRegisTimeForm01">3.แบบสรุปวันปฏิบัติงานนอกเวลาราชการปกติ</button>
-                                                                </div>
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -347,7 +390,7 @@
             }, false);
         })();
         function checkDelete() {
-            return confirm('ต้องการลบโครงการนี้ใช่หรือไม่');
+            return confirm('ต้องการลบรูปแบบการเบิกนี้ใช่หรือไม่');
         }
     </script>
 
@@ -361,7 +404,7 @@
             } else {
                 $('#result').html('');
                 $.ajax({
-                    url: "ot.php",
+                    url: "ot_type.php",
                     method: 'post',
                     data: { search: txt },
                     dataType: "text",
@@ -371,9 +414,23 @@
                 });
             }
         });
+    });
 
-        });
+       
     </script>
+
+
+    <script>
+            $('.edit').click(function () {
+                //get data from date div (calendar.php)
+                //var date = $(this).attr('data-date');
+                //set value to modal
+                //$('#datepick').val(date);
+
+                $('#edit_otType').modal('show');
+            })
+
+        </script>
 </body>
 
 </html>

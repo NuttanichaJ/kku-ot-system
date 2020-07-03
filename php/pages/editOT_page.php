@@ -96,6 +96,12 @@
                         <span class="menu-title">กำหนดวันหยุด</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ot_type.php">
+                        <i class="mdi mdi-library-plus menu-icon"></i>
+                        <span class="menu-title">กำหนดการเบิก</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -285,7 +291,7 @@
                                                                         required>
                                                                         <option value="" disabled="" selected="">
                                                                         </option>
-                                                                        <option value="1">ชื่อ1</option>
+                                                                        <option value="1">นายขอน แก่น</option>
                                                                         <option value="2">ชื่อ2</option>
                                                                     </select>
                                                                 </div>
@@ -298,8 +304,8 @@
                                                                     <select class="mdb-select md-form">
                                                                         <option value="" disabled="" selected="">
                                                                         </option>
-                                                                        <option value="1">รายวัน</option>
-                                                                        <option value="2">รายคาบ</option>
+                                                                        <option value="1">แบบรายวัน กรณีวันปกติ</option>
+                                                                        <option value="2">แบบรายวัน กรณีวันหยุดราชการ</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -308,7 +314,7 @@
                                                                     for="inputTitle">เวลาเข้า</label>
                                                                 <div class="col-sm-7"><input type="time"
                                                                         class="form-control" maxlength="32"
-                                                                        style="font-size:16px;">
+                                                                        >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group"><label
@@ -331,7 +337,7 @@
                                         <!-- modal: Edit OT -->
                                         <div id="editOT" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h3 id="myModalLabel">แก้ไข</h3>
@@ -345,7 +351,7 @@
                                                                     <th>วันที่</th>
                                                                     <th>เวลาเข้า</th>
                                                                     <th>เวลาออก</th>
-                                                                   
+                                                                    <th>การเบิก</th>
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -361,6 +367,7 @@
                                                                     <td><?php echo '2020-05-20';?></td>
                                                                     <td><?php echo '16.30';?></td>
                                                                     <td><?php echo '20.00';?></td>
+                                                                    <td><?php echo 'แบบรายวัน กรณีวันปกติ' ?></td>
                                                                     <td><a class="mdi mdi-trash-can-outline" type="button" name="deleteDataOT"></a></td>
                                                                 </tr>
                                                                 <tr>
@@ -368,6 +375,7 @@
                                                                     <td><?php echo '2020-07-02';?></td>
                                                                     <td><?php echo '08.30';?></td>
                                                                     <td><?php echo '16.30'?></td>
+                                                                    <td><?php echo 'แบบรายวัน กรณีวันหยุดราชการ' ?></td>
                                                                     <td><a class="mdi mdi-trash-can-outline" type="button" name="deleteDataOT"></a></td>
                                                                 </tr>
                                                                 <?php 

@@ -56,6 +56,12 @@
                         <span class="menu-title">กำหนดวันหยุด</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ot_type.php">
+                        <i class="mdi mdi-library-plus menu-icon"></i>
+                        <span class="menu-title">กำหนดการเบิก</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
