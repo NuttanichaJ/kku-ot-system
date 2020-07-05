@@ -11,35 +11,6 @@
         if(mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_array($result);
     }
-
-        //INSERT holiday
-        $holiday_date = $holiday_desc = $can_work = $create_date = "";
-    
-        
-        if(isset($_POST["addholiday"])){
-
-            $holiday_desc = trim($_POST["holiday_desc"]);
-            $can_work = trim($_POST["can_work"]);
-            //$create_by = trim($_POST["txtCreate_by"]);
-            $holiday_date = $_POST["datepick"];
-            date_default_timezone_set('asia/bangkok');
-            $create_date = date("Y-m-d H:i:s");
-            $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK, CREATE_DATE) VALUES ('1','$holiday_date','$holiday_desc', '$can_work', '$create_date')";
-            mysqli_query($conn, $sqlInsert);
-        }
-
-
-        //DELETE holiday
-    if(isset($_POST['deleteholiday'])) {
-        
-        //$create_by = trim($_POST["txtCreate_by"]);
-        $holiday_date = $_POST["datepick"];
-        
-        $sqlDelete = "DELETE FROM ot_holiday WHERE HOLIDAY_DATE='$holiday_date'";
-        $result = mysqli_query($conn, $sqlDelete);
-
-        header("location: holiday.php");
-    }
 ?>
 
 
@@ -61,6 +32,9 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="../../assets/css/style.css" />
     <!-- End layout styles -->
+
+
+
 
 </head>
 
@@ -146,7 +120,7 @@
                                     <div class="container">
                                         <form method="POST">
                                             <div class="form-group d-flex">
-                                                <label class="control-label" for="inputTitle">ID:</label>
+                                                <label class="control-label">ID:</label>
                                                 <div class="col-sm-2">
                                                     <input type="text" name="txtOT_ID"
                                                         class="form-control border border-secondary"
@@ -188,37 +162,50 @@
                                             <div class="wrapper-calendar">
                                                 <div class="calendar">
                                                     <div class="left-side">
-                                                        <table class="editOt_table table table-striped table-bordered">
-                                                            <thead>
-                                                                <tr class="text-white text-center">
-                                                                    <th></th>
-                                                                    <th>ID</th>
-                                                                    <th class="col-sm-3">ชื่อ</th>
-                                                                    <th>บาท</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                                <tr>
-                                                                    <td><a type="button"
-                                                                            class="mdi mdi-account-edit text-primary"
-                                                                            data-target='#editOT'
-                                                                            data-toggle='modal'></a>
-                                                                    </td>
-                                                                    <td><?php echo '100000'?></td>
-                                                                    <td><?php echo 'นายขอน แก่น'?></td>
-                                                                    <td><?php echo '620'?></td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
+                                                        <form method="POST">
+                                                            <?php
+                                                            $sql = "SELECT HR_ID, NAME, SURNAME, SUM(AMOUNT) as total FROM ot_item WHERE OT_ID = $ot_id GROUP BY HR_ID";
+                                                            if($result = mysqli_query($conn, $sql)) {
+                                                                if(mysqli_num_rows($result) > 0) {
+                                                                    echo "<table class='editOt_table table table-striped table-bordered'>";
+                                                                        echo "<thead>";
+                                                                            echo "<tr class='text-white text-center'>";
+                                                                                echo "<th></th>";
+                                                                                echo "<th>ID</th>";
+                                                                                echo "<th class='col-sm-3'>ชื่อ</th>";
+                                                                                echo "<th>บาท</th>";
+                                                                            echo "</tr>";
+                                                                        echo "</thead>";
+                                                                        echo "<tbody>";
+                                                                        while($row = mysqli_fetch_array($result)) {
+                                                                            echo "<tr>";
+                                                                                echo "<td><a type='submit' class='manage mdi mdi-account-edit text-primary' name='manage' id='manage'
+                                                                                data-hr-id=" . $row['HR_ID'] ."></a></td>";
+                                                                                echo "<td>" . $row['HR_ID'] . "</td>";
+                                                                                echo "<td>" . $row['NAME'] . " " . $row['SURNAME'] . "</td>";
+                                                                                echo "<td>" . $row['total'] . "</td>";
+                                                                                
+                                                                            echo "</tr>";
+                                                                        }
+                                                                        echo "</tbody>";
+                                                                    echo "</table>";
+                                                                    mysqli_free_result($result);
+                                                                } else {
+                                                                    echo "<p class='lead'><em>No records were found.</em></p>";
+                                                                }  
+                                                            }
+                                                    ?>
+                                                        </form>
                                                     </div>
+
+
+
 
                                                     <div class="right-side">
                                                         <div class="month">
                                                             <div class="prev">
                                                                 <a data-otID="<?php echo $ot_id ?>"
-                                                                    href="?ym=<?php echo $_SESSION['prev']; ?>&edit_id=<?php  echo $row['OT_ID'] ?>">&#10094</a>
+                                                                    href="?ym=<?php echo $_SESSION['prev']; ?>&edit_id=<?php  echo $ot_id ?>">&#10094</a>
                                                             </div>
                                                             <div>
                                                                 <h5 class="text-center" id="month">
@@ -227,7 +214,7 @@
                                                             </div>
                                                             <div class="next">
                                                                 <a data-otID="<?php echo $ot_id ?>"
-                                                                    href="?ym=<?php echo $_SESSION['next']; ?>&edit_id=<?php  echo $row['OT_ID'] ?>">&#10095</a>
+                                                                    href="?ym=<?php echo $_SESSION['next']; ?>&edit_id=<?php  echo $ot_id ?>">&#10095</a>
                                                             </div>
                                                         </div>
 
@@ -254,8 +241,8 @@
                                             </div>
                                         </div>
 
-                                        <!-- modal: Add OT -->
-                                        <div id="addOT" class="modal fade" tabindex="-1" role="dialog"
+                                        <!-- modal: Add OTITEM -->
+                                        <div id="addOTItem" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -267,72 +254,118 @@
 
 
                                                     <div class="modal-body">
-                                                        <form class="form-horizontal" id="addEvent" action=""
-                                                            method="post" novalidate>
+                                                        <form class="needs-validation" class="form-horizontal"
+                                                            id="addOT" name="addOT" method="post" novalidate>
+                                                            <input type="hidden" value='<?php echo $ot_id ?>'
+                                                                name='ot_id'>
+                                                            <input type="hidden" value='<?php echo $newOTItem_id?>'
+                                                                name='otItem_id'>
+
                                                             <div class="form-group">
-                                                                <label class="col-sm-3 control-label"
-                                                                    for="inputTitle">วันที่:</label>
+                                                                <label class="col-sm-3 control-label">วันที่:</label>
                                                                 <div class="col-sm-7">
                                                                     <input type="text" id="datepick" name="datepick"
                                                                         class="form-control" maxlength="32" value='เวลา'
                                                                         readonly>
-
                                                                 </div>
                                                             </div>
 
                                                             <div class="form-group"><label
-                                                                    class="col-sm-5 control-label"
-                                                                    for="inputLocation">ชื่อ</label>
+                                                                    class="col-sm-5 control-label">ชื่อ</label>
                                                                 <div class="col-sm-7">
-                                                                    <select class="selectpicker mdb-select md-form"
+                                                                    <?php 
+                                                                        echo '<select class="mdb-select md-form" name="create_by" required>';
+                                                                        
+                                                                        // $sqlOtType = "SELECT OTTYPE_NAME, OTTYPE_RATE FROM ot_type";
+
+                                                                        // if($result_type = mysqli_query($conn, $sqlOtType)) {
+                                                                        //     if(mysqli_num_rows($result_type) > 0) {
+                                                                                
+                                                                        //        echo '<option value="" disabled="" selected=""></option>';
+
+                                                                        //         while($row = mysqli_fetch_array($result_type)){
+                                                                                     echo "<option value='aaa'>aaa</option>";
+                                                                        //         }
+                                                                        //     }
+                                                                        // }
+                                                                        
+                                                                        echo '</select>';
+                                                                    ?>
+                                                                    <div class="invalid-feedback">กรุณาเลือกชื่อ</div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-sm-4 control-label">การเบิก</label>
+                                                                <div class="col-sm-7">
+                                                                    <?php 
+                                                                        echo '<select class="mdb-select md-form" name="ot_type" required>';
+                                                                        
+                                                                        $sqlOtType = "SELECT OT_TYPE, OTTYPE_RATE, OTTYPE_NAME FROM ot_type";
+
+
+                                                                        if($result_type = mysqli_query($conn, $sqlOtType)) {
+                                                                            if(mysqli_num_rows($result_type) > 0) {
+                                                                                
+                                                                                
+                                                                                
+                                                                                echo '<option value="" disabled="" selected=""></option>';
+
+                                                                                while($row = mysqli_fetch_array($result_type)){
+
+                                                                                    if($row['OT_TYPE'] == 1){
+                                                                                        $ot_type = 'แบบเหมารายวัน';
+                                                                                    } elseif($row['OT_TYPE'] == 2){
+                                                                                        $ot_type = 'แบบรายคาบ';
+                                                                                    } elseif($row['OT_TYPE'] == 3){
+                                                                                        $ot_type = 'แบบรายชั่วโมง';
+                                                                                    }
+                                                                                    echo "<option value='". $row['OT_TYPE']."|". $row['OTTYPE_RATE']."'>". $ot_type." ". $row['OTTYPE_NAME']."</option>";
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                        echo '</select>';
+                                                                    
+                                                                    ?>
+                                                                    <div class="invalid-feedback">กรุณาเลือกการเบิก
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-3 control-label">เวลาเข้า</label>
+                                                                <div class="col-sm-7">
+                                                                    <input type="time" class="form-control"
+                                                                        maxlength="32" name='work_from' id='work_from'
                                                                         required>
-                                                                        <option value="" disabled="" selected="">
-                                                                        </option>
-                                                                        <option value="1">นายขอน แก่น</option>
-                                                                        <option value="2">ชื่อ2</option>
-                                                                    </select>
+                                                                    <div class="invalid-feedback">กรุณาใส่เวลาเข้า</div>
                                                                 </div>
-                                                            </div>
 
-                                                            <div class="form-group"><label
-                                                                    class="col-sm-4 control-label"
-                                                                    for="inputTitle">การเบิก</label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label">เวลาออก</label>
                                                                 <div class="col-sm-7">
-                                                                    <select class="mdb-select md-form">
-                                                                        <option value="" disabled="" selected="">
-                                                                        </option>
-                                                                        <option value="1">แบบรายวัน กรณีวันปกติ</option>
-                                                                        <option value="2">แบบรายวัน กรณีวันหยุดราชการ</option>
-                                                                    </select>
+                                                                    <input type="time" name='work_to' id='work_to'
+                                                                        class="form-control" maxlength="32" required>
+                                                                    <div class="invalid-feedback">กรุณาใส่เวลาออก</div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group"><label
-                                                                    class="col-sm-3 control-label"
-                                                                    for="inputTitle">เวลาเข้า</label>
-                                                                <div class="col-sm-7"><input type="time"
-                                                                        class="form-control" maxlength="32"
-                                                                        >
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group"><label
-                                                                    class="col-sm-3 control-label"
-                                                                    for="inputTitle">เวลาออก</label>
-                                                                <div class="col-sm-7"><input type="time"
-                                                                        class="form-control" maxlength="32">
-                                                                </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" id="addNewOTItem"
+                                                                    name="addNewOTItem"
+                                                                    class="btn btn-success">ตกลง</button>
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <div class="modal-footer addOT"><button type="button" id="addOT"
-                                                            name="addOT" class="btn btn-success">ตกลง</button></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- End modal: Add OT-->
 
-
                                         <!-- modal: Edit OT -->
-                                        <div id="editOT" class="modal fade" tabindex="-1" role="dialog"
+                                        <div id="manageOTItem" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
@@ -342,51 +375,53 @@
                                                             aria-hidden="true">×</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <table class="table table-striped table-bordered">
-                                                            <thead>
-                                                                <tr class="text-center">
-                                                                    <th>วันที่</th>
-                                                                    <th>เวลาเข้า</th>
-                                                                    <th>เวลาออก</th>
-                                                                    <th>การเบิก</th>
-                                                                    <th></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <?php 
-				        // if(count($userData)>0){
-					    //     $s	=	'';
-					    //     foreach($userData as $val){
-					    // 	    $s++;
-		            ?>
-                                                                <tr>
-                                                                    
-                                                                    <td><?php echo '2020-05-20';?></td>
-                                                                    <td><?php echo '16.30';?></td>
-                                                                    <td><?php echo '20.00';?></td>
-                                                                    <td><?php echo 'แบบรายวัน กรณีวันปกติ' ?></td>
-                                                                    <td><a class="mdi mdi-trash-can-outline" type="button" name="deleteDataOT"></a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    
-                                                                    <td><?php echo '2020-07-02';?></td>
-                                                                    <td><?php echo '08.30';?></td>
-                                                                    <td><?php echo '16.30'?></td>
-                                                                    <td><?php echo 'แบบรายวัน กรณีวันหยุดราชการ' ?></td>
-                                                                    <td><a class="mdi mdi-trash-can-outline" type="button" name="deleteDataOT"></a></td>
-                                                                </tr>
-                                                                <?php 
-					    // 	}
-					    // }else{
-					    // ?>
-                                                                <?php //} ?>
-                                                            </tbody>
-                                                        </table>
+                                                        <form class="needs-validation" method="post">
+                                                            
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr class="text-center">
+                                                                        <th>วันที่</th>
+                                                                        <th>เวลาเข้า</th>
+                                                                        <th>เวลาออก</th>
+                                                                        <th>การเบิก</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <?php 
+                                                                        
+                                                                            echo $_POST['hr_id'];
+                                                                        
+                                                                        
+                                                                        // $sql = "SELECT WORK_DATE, WORK_FROM, WORK_TO, AMOUNT as total FROM ot_item WHERE HR_ID=$hr_id AND OT_ID = $ot_id";
+                                                                        // if($result = mysqli_query($conn, $sql)) {
+                                                                        //     if(mysqli_num_rows($result) > 0) {
+                                                                        //         while($row = mysqli_fetch_array($result_type)){
+                                                                        //         echo "<tr>";
+                                                                        //             echo "<td>" . $row['WORK_DATE'] . "</td>";
+                                                                        //             echo "<td>" . $row['WORK_FROM'] . "</td>";
+                                                                        //             echo "<td>" . $row['WORK_TO'] . "</td>";
+                                                                        //             echo "<td><a href='../editOT.php?deleteOTItem=" . $row['OT_ID'] . "' class='text-danger'
+                                                                        //                 onClick='return checkDelete();'><i class='mdi mdi-delete'></i> ลบ</a></td>";
+                                                                        //         echo "</tr>";
+                                                                        //         }
+                                                                        //     }
+                                                                        // }    
+
+                                                                    ?>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="modal-footer">
+                                                                <button type="button"
+                                                                    class="btn btn-success">ตกลง</button>
+                                                            </div>
+
+                                                        </form>
                                                     </div>
-                                                    <div class="modal-footer editOT"><button type="button" id="editOT"
-                                                            name="editOT" class="btn btn-success">ตกลง</button></div>
                                                 </div>
+
                                             </div>
+
                                         </div>
                                         <!-- End modal: Edit OT-->
                                     </div>
@@ -397,29 +432,61 @@
                 </div>
             </div>
         </div>
+    </div>
 
 
 
-        <!-- plugins:js -->
-        <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-        <!-- endinject -->
+    <!-- plugins:js -->
+    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
 
-        <!-- inject:js -->
-        <script src="../../assets/js/off-canvas.js"></script>
-        <script src="../../assets/js/hoverable-collapse.js"></script>
-        <script src="../../assets/js/misc.js"></script>
-        <!-- endinject -->
-        <script>
-            $('.day').click(function () {
-                //get data from date div (calendar.php)
-                var date = $(this).attr('data-date');
-                //set value to modal
-                $('#datepick').val(date);
+    <!-- inject:js -->
+    <script src="../../assets/js/off-canvas.js"></script>
+    <script src="../../assets/js/hoverable-collapse.js"></script>
+    <script src="../../assets/js/misc.js"></script>
+    <!-- endinject -->
+    <script>
+        //check input !empty
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
 
-                $('#addOT').modal('show');
-            })
+        // <!-- confirm delete -->
+        function checkDelete() {
+            return confirm('ต้องการลบใช่หรือไม่');
+        }
 
-        </script>
+        $('.manage').click(function () {
+            
+            var hr_id = $(this).attr('data-hr-id');
+            $('#hr_id').val(hr_id); 
+            
+            $('#manageOTItem').modal('show');
+        });
+
+       $('.day').click(function () {
+            //get data from date div (calendar.php)
+            var date = $(this).attr('data-date');
+            //set value to modal
+            $('#datepick').val(date);
+            $('#addOTItem').modal('show');
+        });
+
+    </script>
 
 </body>
 

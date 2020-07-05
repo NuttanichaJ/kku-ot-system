@@ -141,7 +141,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- modal: Edit OT -->
+                                    <!-- modal: delete holiday -->
                                     <div id="editHoliday" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
                                             <div class="modal-dialog">
@@ -152,7 +152,7 @@
                                                             aria-hidden="true">×</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                    <form class="form-horizontal" method="post" novalidate>
+                                                    <form class="needs-validation" class="form-horizontal" method="post" novalidate>
                                                         
                                                     <div class="form-group">
                                                     <label class="col-sm-3 control-label">วันที่:</label>
@@ -185,9 +185,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- End modal: Edit OT-->
-                                                    </div>
-                                    
+                                    </div>
+                                    <!-- End modal: delete holiday-->
 
                                     <!-- modal: Add Holiday -->
                                     <div id="addHoliday" class="modal fade" tabindex="-1" role="dialog"
@@ -202,44 +201,40 @@
 
 
                                                 <div class="modal-body">
-                                                    <form class="form-horizontal" method="post" novalidate>
+                                                    <form class="needs-validation" class="form-horizontal" method="post" novalidate>
                                                         
                                                         <div class="form-group">
-                                                        <label class="col-sm-3 control-label"
-                                                                for="inputTitle">วันที่:</label>
+                                                        <label class="col-sm-3 control-label">วันที่:</label>
                                                             <div class="col-sm-7">
-                                                                <input type="text" id="date_pick" name="date_pick"
-                                                                    class="form-control" maxlength="32" value='เวลา' readonly>
-                                                            
+                                                                <input type="text" id="date_pick" name="date_pick" class="form-control" maxlength="32" value='เวลา' readonly>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                         <div class="form-group">
-                                                        <label class="col-sm-3 control-label"
-                                                                for="inputTitle">หัวข้อ:</label>
+                                                        <label class="col-sm-3 control-label">หัวข้อ:</label>
                                                             <div class="col-sm-7"><input type="text" id="holiday_desc" name="holiday_desc"
                                                                     class="form-control" maxlength="32" value="วันหยุด" required>
+                                                            <div class="invalid-feedback">กรุณาใส่หัวข้อ</div>
+                                                            </div>
                                                             
-                                        
                                                         </div>
-                                                    </div>
-                                                        <div class="form-group"><label class="col-sm-3 control-label"
-                                                                for="inputLocation">การเบิกจ่าย:</label>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-3 control-label">การเบิกจ่าย:</label>
                                                                 
                                                             <div class="col-sm-7">
-                                                                <select class="mdb-select md-form" name="" required>
+                                                                <select class="mdb-select md-form" name="can_work" required>
                                                                     <option value="Y">เบิกได้</option>
                                                                     <option value="N">เบิกไม่ได้</option>
                                                                 </select>
-                                                    </div>
+                                                                <div class="invalid-feedback">กรุณาใส่การเบิกจ่าย</div>
+                                                            </div>
+                                                            
                                                         </div>
                                                     
                                                         <div class="modal-footer">
                                                             <button name='addholiday' id='addholiday' type='submit' 
                                                                 class="btn btn-success">ตกลง</button>
 
-                                                        </div>
-
-                                                        
+                                                        </div>                           
                                                     </form>
                                                 </div>
                                                
@@ -270,10 +265,28 @@
     <script src="../../assets/js/misc.js"></script>
     <!-- endinject -->
     <script>
-        
-        
+        //check input !empty
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+
         $('.holiday').click(function(){
-            //get data from date div (calendar.php)
+            //get data from date div (holidayCalendar.php)
             var date = $(this).attr('data-date');
             var can_work = $(this).attr('data-canwork');
             var holiday_desc = $(this).attr('data-holidaydesc');
@@ -293,7 +306,7 @@
         
         
         $('.day').click(function(){
-            //get data from date div (calendar.php)
+            //get data from date div (holidayCalendar.php)
             var date = $(this).attr('data-date');
             //set value to modal
             $('#date_pick').val(date);

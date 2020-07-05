@@ -16,16 +16,18 @@
     if(isset($_POST["add_ottype"])) {
         
         $ottype_id = $_POST["txtOT_TYPE_ID"];
+        $ot_type = $_POST['txtOT_TYPE'];
         $ottype_name = trim($_POST["txtOT_TYPE_NAME"]);
         $create_by = trim($_POST["txtCreate_by"]);
         $ottype_rate = trim($_POST['otType_rate']);
+
         date_default_timezone_set('asia/bangkok');
         $create_date = date("Y/m/d H:i:s");
-        $sqlInsert = "INSERT INTO ot_type(OTTYPE_ID, OTTYPE_NAME, OTTYPE_RATE, CREATE_BY, CREATE_DATE) VALUES ('$ottype_id', '$ottype_name', $ottype_rate, '$create_by', '$create_date')";
+
+        $sqlInsert = "INSERT INTO ot_type(OTTYPE_ID, OT_TYPE, OTTYPE_NAME, OTTYPE_RATE, CREATE_BY, CREATE_DATE) VALUES ('$ottype_id', '$ot_type', '$ottype_name', $ottype_rate, '$create_by', '$create_date')";
         mysqli_query($conn, $sqlInsert);
     }
 
-    
         $sql_maxID = "SELECT MAX(OTTYPE_ID) as maxottype_id FROM ot_type";
         $result_maxID = mysqli_query($conn, $sql_maxID);
         $row = mysqli_fetch_assoc($result_maxID);

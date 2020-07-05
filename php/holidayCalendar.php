@@ -258,7 +258,7 @@
             $holiday_desc = trim($_POST["holiday_desc"]);
             $can_work = trim($_POST["can_work"]);
             //$create_by = trim($_POST["txtCreate_by"]);
-            $holiday_date = $_POST["datepick"];
+            $holiday_date = $_POST["date_pick"];
             date_default_timezone_set('asia/bangkok');
             $create_date = date("Y-m-d H:i:s");
             $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK, CREATE_DATE) VALUES ('1','$holiday_date','$holiday_desc', '$can_work', '$create_date')";

@@ -327,7 +327,7 @@
     <script src="../../assets/js/misc.js"></script>
     <!-- endinject -->
 
-    <!-- confirm delete -->
+    
     <script>
         (function () {
             'use strict';
@@ -346,6 +346,8 @@
                 });
             }, false);
         })();
+
+        // <!-- confirm delete -->
         function checkDelete() {
             return confirm('ต้องการลบโครงการนี้ใช่หรือไม่');
         }
@@ -353,25 +355,24 @@
 
     <!-- Ajax data Search -->
     <script>
-        $(document).ready(function () {
-            $('search_text').keyup(fucntion() {
+        (document).ready(function () {
+            $('#search_text').keyup(function(){
                 var txt = $(this).val();
                 if(txt != '') {
 
-            } else {
-                $('#result').html('');
-                $.ajax({
-                    url: "ot.php",
-                    method: 'post',
-                    data: { search: txt },
-                    dataType: "text",
-                    success: function (data) {
-                        $('#table-data').html(data);
-                    }
-                });
-            }
-        });
-
+                } else {
+                    $('#result').html('');
+                    $.ajax({
+                        url: "ot.php",
+                        method: 'post',
+                        data: { search: txt },
+                        dataType: "text",
+                        success: function (data) {
+                            $('#table-data').html(data);
+                        }
+                    });
+                }
+            });     
         });
     </script>
 </body>

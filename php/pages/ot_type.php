@@ -110,7 +110,7 @@
                                                                 <label>ค้นหา</label>
                                                                 <input type="text" name="search" id="search_text"
                                                                     class="form-control form-control-sm border border-secondary"
-                                                                    placeholder="รูปแบบการเบิก/ผู้จัดทำรายการ">
+                                                                    placeholder="กรณี/รายละเอียด/ผู้จัดทำรายการ">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -124,8 +124,9 @@
                                         <div class="clearfix"></div>
                                         <!-- Button trigger modal-->
                                         <div class="btn-select">
-                                            <button type="button" name="btn-add" id="btn-add" method="POST" class="mdi mdi-plus btn btn-success"
-                                                data-toggle="modal" data-target="#modalAdd" href="../otType.php">
+                                            <button type="button" name="btn-add" id="btn-add" method="POST"
+                                                class="mdi mdi-plus btn btn-success" data-toggle="modal"
+                                                data-target="#modalAdd" href="../otType.php">
                                                 เพิ่มใหม่</button>
                                         </div>
 
@@ -133,6 +134,7 @@
                                             
                                             if(isset($_POST["search"])) {
                                                 $search = trim($_POST["search"]);
+
                                                 $sql = "SELECT * FROM ot_type 
                                                   WHERE OTTYPE_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
                                               } else {
@@ -147,6 +149,7 @@
                                                             echo "<tr class='bg-primary text-white text-center'>";
                                                                 echo "<th>รหัส</th>";
                                                                 echo "<th>รูปแบบการเบิก</th>";
+                                                                echo "<th>กรณี/รายละเอียด</th>";
                                                                 echo "<th>ค่าล่วงเวลา</th>";
                                                                 echo "<th>ผู้จัดทำรายการ</th>";
                                                                 echo "<th>วันที่สร้างการเบิก</th>";
@@ -158,8 +161,16 @@
                         
                                                         while($row = mysqli_fetch_array($result)){
                                                             
+                                                            if($row['OT_TYPE'] == 1){
+                                                                $ot_type = 'แบบเหมารายวัน';
+                                                            } elseif($row['OT_TYPE'] == 2){
+                                                                $ot_type = 'แบบรายคาบ';
+                                                            } elseif($row['OT_TYPE'] == 3){
+                                                                $ot_type = 'แบบรายชั่วโมง';
+                                                            }
                                                             echo "<tr>";
                                                                 echo "<td>" . $row['OTTYPE_ID'] . "</td>";
+                                                                echo "<td>" . $ot_type . "</td>";
                                                                 echo "<td>" . $row['OTTYPE_NAME'] . "</td>";
                                                                 echo "<td>" . $row['OTTYPE_RATE'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_BY'] . "</td>";
@@ -171,8 +182,8 @@
                                                                     data-name=" . $row['OTTYPE_NAME'] . "
                                                                     data-rate=" . $row['OTTYPE_RATE'] . "
                                                                     data-create-by=" . $row['CREATE_BY'] . "
-                                                                    ><i
-                                                                    class='mdi mdi-pencil'></i> แก้ไข</a> ";
+                                                                    data-ot-type=" . $row['OT_TYPE'] . "
+                                                                    ><i class='mdi mdi-pencil'></i> แก้ไข</a> ";
                                                                     echo "|";
                                                                     echo " <a name='deleteOttype' href='../otType.php?deleteOttype=" . $row['OTTYPE_ID'] . "' class='text-danger'
                                                                     onClick='return checkDelete();'><i
@@ -212,22 +223,39 @@
                                                                     for="inputTitle">ID:</label>
                                                                 <div class="col-sm-3">
                                                                     <input type="text" name="txtOT_TYPE_ID"
-                                                                        class="form-control border border-secondary" value="<?php 
+                                                                        class="form-control border border-secondary"
+                                                                        value="<?php 
                                                                         
                                                                         echo $_SESSION['newottype_id'];;
-                                                                        ?>"
-                                                                        readonly>
+                                                                        ?>" readonly>
 
                                                                 </div>
                                                             </div>
                                                             <div class="form-group"><label
-                                                                    class="col-sm-3 control-label" for="inputLocation">
+                                                                    class="col-sm-3 control-label">
                                                                     รูปแบบการเบิก:</label>
+                                                                <div class="col-sm-10">
+                                                                    <select class="mdb-select md-form" name="txtOT_TYPE"
+                                                                        required>
+                                                                        <option value="" disabled="" selected="">
+                                                                        </option>
+                                                                        <option value="1">1: แบบเหมารายวัน
+                                                                        </option>
+                                                                        <option value="2">2: แบบรายคาบ</option>
+                                                                        <option value="3">3: แบบรายชั่วโมง
+                                                                        </option>
+                                                                    </select>
+                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-6 control-label" for="inputLocation">
+                                                                    กรณี/รายละเอียด:</label>
                                                                 <div class="col-sm-10">
                                                                     <input type="text" name="txtOT_TYPE_NAME"
                                                                         class="form-control border border-secondary"
                                                                         required>
-                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
+                                                                    <div class="invalid-feedback">กรุณาใส่ เช่น กรณีวันปกติ/กรณีวันหยุดราชการ
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -244,9 +272,8 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                            
-                                                            <label
-                                                                    class="col-sm-3 control-label" for="inputLocation">
+
+                                                                <label class="col-sm-3 control-label">
                                                                     ค่าล่วงเวลา:</label>
                                                                 <div class="col-sm-10">
                                                                     <input type="text" name="otType_rate"
@@ -254,20 +281,20 @@
                                                                         required>
                                                                     <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
                                                                     </div>
-                                                                
+
                                                                 </div>
-                                                                <label style="color: gray; padding-top: 8px;" 
-                                                                    class="col-sm-10 control-label" for="inputLocation">
+                                                                <label style="color: gray; padding-top: 8px;"
+                                                                    class="col-sm-10 control-label">
                                                                     กรณีแบบรายชั่วโมง กรุณาใส่เป็น บาท/ชั่วโมง</label>
-                                                                    <label style="color: gray;" 
-                                                                    class="col-sm-10 control-label" for="inputLocation">
+                                                                <label style="color: gray;"
+                                                                    class="col-sm-10 control-label">
                                                                     กรณีแบบรายคาบ กรุณาใส่เป็น คาบ/ชั่วโมง</label>
                                                             </div>
 
                                                             <!--Footer-->
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-success"
-                                                                    type="submit" name="add_ottype">เพิ่ม</button>
+                                                                <button class="btn btn-success" type="submit"
+                                                                    name="add_ottype">เพิ่ม</button>
                                                                 <button type="button" class="btn btn-outline-danger"
                                                                     data-dismiss="modal" id="close">ยกเลิก</button>
                                                             </div>
@@ -276,8 +303,8 @@
                                                 </div>
                                             </div>
                                         </div>
- <!-- Modal: Add new Project -->
- <div class="modal fade" id="edit_otType" tabindex="-1" role="dialog"
+                                        <!-- Modal: Add new Project -->
+                                        <div class="modal fade" id="edit_otType" tabindex="-1" role="dialog"
                                             aria-labelledby="modalLabel" aria-hidden="true" le="display: block;">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
@@ -297,27 +324,48 @@
                                                                 <label class="col-sm-3 control-label"
                                                                     for="inputTitle">ID:</label>
                                                                 <div class="col-sm-3">
-                                                                    <input type="text" name="txtOT_TYPE_ID" id="txtOT_TYPE_ID"
-                                                                        class="form-control border border-secondary" readonly>
+                                                                    <input type="text" name="txtOT_TYPE_ID"
+                                                                        id="txtOT_TYPE_ID"
+                                                                        class="form-control border border-secondary"
+                                                                        readonly>
 
                                                                 </div>
                                                             </div>
                                                             <div class="form-group"><label
-                                                                    class="col-sm-3 control-label" for="inputLocation">
-                                                                    รูปแบบการเบิก:</label>
+                                                                    class="col-sm-3 control-label">รูปแบบการเบิก:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="txtOT_TYPE_NAME" id="txtOT_TYPE_NAME"
+                                                                    <select class="mdb-select md-form" name="txtOT_TYPE"
+                                                                        id="txtOT_TYPE" required>
+                                                                        <option value="" disabled="" selected="">
+                                                                        </option>
+                                                                        <option value="1">1: แบบเหมารายวัน
+                                                                        </option>
+                                                                        <option value="2">2: แบบรายคาบ</option>
+                                                                        <option value="3">3: แบบรายชั่วโมง
+                                                                        </option>
+                                                                    </select>
+                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group"><label
+                                                                    class="col-sm-6 control-label">
+                                                                    กรณี/รายละเอียด:</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" name="txtOT_TYPE_NAME"
+                                                                        id="txtOT_TYPE_NAME"
                                                                         class="form-control border border-secondary"
                                                                         required>
-                                                                    <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
+                                                                    <div class="invalid-feedback">กรุณาใส่ เช่น กรณีวันปกติ/กรณีวันหยุดราชการ
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-sm-6 control-label"
                                                                     for="inputDate">ผู้จัดทำรายการ:</label>
-                                                                <div class="col-sm-10"> 
-                                                                    <input type="text" name="txtCreate_by" id="txtCreate_by"
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" name="txtCreate_by"
+                                                                        id="txtCreate_by"
                                                                         class="form-control border border-secondary"
                                                                         required>
                                                                     <div class="invalid-feedback">กรุณาใส่ชื่อผู้จัดทำ
@@ -326,33 +374,33 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                            
-                                                            <label
-                                                                    class="col-sm-3 control-label" for="inputLocation">
+
+                                                                <label class="col-sm-3 control-label">
                                                                     ค่าล่วงเวลา:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="otType_rate" id="otType_rate"
+                                                                    <input type="text" name="otType_rate"
+                                                                        id="otType_rate"
                                                                         class="form-control border border-secondary"
                                                                         required>
                                                                     <div class="invalid-feedback">กรุณาใส่รูปแบบการเบิก
                                                                     </div>
-                                                                
+
                                                                 </div>
-                                                                
+
                                                             </div>
 
                                                             <!--Footer-->
                                                             <div class="modal-footer">
-                                                                <button class="btn btn-warning"
-                                                                    type="submit" name="edit_otType">แก้ไข</button>
-                                                                
+                                                                <button class="btn btn-warning" type="submit"
+                                                                    name="edit_otType">แก้ไข</button>
+
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -367,14 +415,16 @@
     <!-- plugins:js -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
+    
     <!-- inject:js -->
     <script src="../../assets/js/off-canvas.js"></script>
     <script src="../../assets/js/hoverable-collapse.js"></script>
     <script src="../../assets/js/misc.js"></script>
     <!-- endinject -->
 
-    <!-- confirm delete -->
+    
     <script>
+        //check input !empty
         (function () {
             'use strict';
             window.addEventListener('load', function () {
@@ -392,6 +442,8 @@
                 });
             }, false);
         })();
+
+        // confirm delete
         function checkDelete() {
             return confirm('ต้องการลบรูปแบบการเบิกนี้ใช่หรือไม่');
         }
@@ -400,48 +452,49 @@
     <!-- Ajax data Search -->
     <script>
         $(document).ready(function () {
-            $('search_text').keyup(fucntion() {
+            $('#search_text').keyup(function(){
                 var txt = $(this).val();
                 if(txt != '') {
 
-            } else {
-                $('#result').html('');
-                $.ajax({
-                    url: "ot_type.php",
-                    method: 'post',
-                    data: { search: txt },
-                    dataType: "text",
-                    success: function (data) {
-                        $('#table-data').html(data);
-                    }
-                });
-            }
+                } else {
+                    $('#result').html('');
+                    $.ajax({
+                        url: "ot_type.php",
+                        method: 'post',
+                        data: { search: txt },
+                        dataType: "text",
+                        success: function (data) {
+                            $('#table-data').html(data);
+                        }
+                    });
+                }
+            });     
         });
-    });
+        
 
-       
     </script>
 
 
     <script>
-            $('.edit').click(function () {
-                //get data from edit
-                var ottype_id = $(this).attr('data-id');
-                var ottype_name = $(this).attr('data-name');
-                var ottype_rate = $(this).attr('data-rate');
-                var create_by = $(this).attr('data-create-by');
-                
-               //set value to modal
-                $('#txtOT_TYPE_ID').val(ottype_id);
-                $('#txtOT_TYPE_NAME').val(ottype_name);
-                $('#txtCreate_by').val(create_by);
-                $('#otType_rate').val(ottype_rate);
+        $('.edit').click(function () {
+            //get data from edit
+            var ottype_id = $(this).attr('data-id');
+            var ottype_name = $(this).attr('data-name');
+            var ottype_rate = $(this).attr('data-rate');
+            var create_by = $(this).attr('data-create-by');
+            var ot_type = $(this).attr('data-ot-type');
 
-                
-                $('#edit_otType').modal('show');
-            })
+            //set value to modal
+            $('#txtOT_TYPE_ID').val(ottype_id);
+            $('#txtOT_TYPE_NAME').val(ottype_name);
+            $('#txtCreate_by').val(create_by);
+            $('#otType_rate').val(ottype_rate);
+            $('#txtOT_TYPE').val(ot_type);
 
-        </script>
+            $('#edit_otType').modal('show');
+        })
+
+    </script>
 </body>
 
 </html>
