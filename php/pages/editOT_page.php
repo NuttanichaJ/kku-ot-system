@@ -109,7 +109,12 @@
                 <div class="content-wrapper">
                     <div class="page-header">
                         <h3 class="page-title">แก้ไขจัดทำแบบทำงานนอกเวลา</h3>
-                        <p>จำนวนเงินรวม 620 บาท</p>
+                        <p>จำนวนเงินรวม <?php 
+                                        $sum_allProject = "SELECT SUM(AMOUNT) as total FROM ot_item WHERE OT_ID = $ot_id";
+                                        $query_sum = mysqli_query($conn, $sum_allProject);
+                                        $result_sum = mysqli_fetch_array($query_sum);
+                                        echo $result_sum['total'];
+                                        ?> บาท</p>
 
                     </div>
                     <!-- first row starts here -->
@@ -179,12 +184,10 @@
                                                                         echo "<tbody>";
                                                                         while($row = mysqli_fetch_array($result)) {
                                                                             echo "<tr>";
-                                                                                echo "<td><a type='submit' class='manage mdi mdi-account-edit text-primary' name='manage' id='manage'
-                                                                                data-hr-id=" . $row['HR_ID'] ."></a></td>";
+                                                                                echo "<td><a href='ot_item.php?hr_id=" . $row['HR_ID'] ."&ot_id=" . $ot_id ."' type='button' class='manage mdi mdi-account-edit text-primary' name='manage' id='manage'></a></td>";
                                                                                 echo "<td>" . $row['HR_ID'] . "</td>";
                                                                                 echo "<td>" . $row['NAME'] . " " . $row['SURNAME'] . "</td>";
                                                                                 echo "<td>" . $row['total'] . "</td>";
-                                                                                
                                                                             echo "</tr>";
                                                                         }
                                                                         echo "</tbody>";
@@ -192,15 +195,12 @@
                                                                     mysqli_free_result($result);
                                                                 } else {
                                                                     echo "<p class='lead'><em>No records were found.</em></p>";
-                                                                }  
+                                                                } 
                                                             }
                                                     ?>
                                                         </form>
                                                     </div>
-
-
-
-
+                                                            
                                                     <div class="right-side">
                                                         <div class="month">
                                                             <div class="prev">
@@ -230,7 +230,6 @@
 
                                                         <div class="days">
                                                             <?php
-                                                              
                                                                 foreach ($weeks as $week) {
                                                                     echo $week;
                                                                 }
@@ -309,7 +308,6 @@
                                                                             if(mysqli_num_rows($result_type) > 0) {
                                                                                 
                                                                                 
-                                                                                
                                                                                 echo '<option value="" disabled="" selected=""></option>';
 
                                                                                 while($row = mysqli_fetch_array($result_type)){
@@ -325,9 +323,7 @@
                                                                                 }
                                                                             }
                                                                         }
-                                                                        
                                                                         echo '</select>';
-                                                                    
                                                                     ?>
                                                                     <div class="invalid-feedback">กรุณาเลือกการเบิก
                                                                     </div>
@@ -376,7 +372,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form class="needs-validation" method="post">
-                                                            
+                                                            <input id='hr_id'>
                                                             <table class="table table-striped table-bordered">
                                                                 <thead>
                                                                     <tr class="text-center">
@@ -389,9 +385,11 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <?php 
-                                                                        
-                                                                            echo $_POST['hr_id'];
-                                                                        
+
+
+                                                                            
+                                                                                
+                                                                            
                                                                         
                                                                         // $sql = "SELECT WORK_DATE, WORK_FROM, WORK_TO, AMOUNT as total FROM ot_item WHERE HR_ID=$hr_id AND OT_ID = $ot_id";
                                                                         // if($result = mysqli_query($conn, $sql)) {
@@ -469,14 +467,6 @@
         function checkDelete() {
             return confirm('ต้องการลบใช่หรือไม่');
         }
-
-        $('.manage').click(function () {
-            
-            var hr_id = $(this).attr('data-hr-id');
-            $('#hr_id').val(hr_id); 
-            
-            $('#manageOTItem').modal('show');
-        });
 
        $('.day').click(function () {
             //get data from date div (calendar.php)

@@ -55,68 +55,13 @@
        
     }
 
-
-    function manageOTItem() {
-        echo '<div id="manageOTItem" class="modal fade" tabindex="-1" role="dialog"
-                aria-labelledby="modalLabel" area-hidden="true" le="display: block;">';
-                echo'<div class="modal-dialog modal-lg">';
-                    echo'<div class="modal-content">';
-                        echo'<div class="modal-header">';
-                            echo'<h3 id="myModalLabel">แก้ไข</h3>';
-                            echo'<button type="button" class="close" data-dismiss="modal"
-                                 aria-hidden="true">×</button>';
-                        echo'</div>';
-                        echo'<div class="modal-body">';
-                            echo'<form class="needs-validation" method="post">';
-                                echo'<table class="table table-striped table-bordered">';
-                                    echo'<thead>';
-                                        echo'<tr class="text-center">';
-                                            echo'<th>วันที่</th>';
-                                            echo'<th>เวลาเข้า</th>';
-                                            echo'<th>เวลาออก</th>';
-                                            echo'<th>การเบิก</th>';
-                                            echo'<th></th>';
-                                        echo'</tr>';
-                                    echo'</thead>';
-                                    echo'<tbody>';
-                                                                    
-                                    $hr_id = $_GET['hr_id'];
-                                    echo $hr_id;
-                                    $sql = "SELECT WORK_DATE, WORK_FROM, WORK_TO, AMOUNT as total FROM ot_item WHERE HR_ID=$hr_id AND OT_ID = $ot_id";
-                                    if($result = mysqli_query($conn, $sql)) {
-                                        if(mysqli_num_rows($result) > 0) {
-                                            while($row = mysqli_fetch_array($result_type)){
-                                            echo "<tr>";
-                                                echo "<td>" . $row['WORK_DATE'] . "</td>";
-                                                echo "<td>" . $row['WORK_FROM'] . "</td>";
-                                                echo "<td>" . $row['WORK_TO'] . "</td>";
-                                                echo "<td><a href='../editOT.php?deleteOTItem=" . $row['OT_ID'] . "' class='text-danger'
-                                                    onClick='return checkDelete();'><i class='mdi mdi-delete'></i> ลบ</a></td>";
-                                            echo "</tr>";
-                                            }
-                                        }
-                                    }    
-                                                                    
-                                    echo'</tbody>';
-                                echo'</table>';
-                                echo'<div class="modal-footer">';
-                                    echo'<button type="button" class="btn btn-success">ตกลง</button>';
-                                echo'</div>';
-
-                            echo'</form>';
-                        echo'</div>';
-                    echo'</div>';
-
-                echo'</div>';
-
-            echo'</div>';
-        
-            echo "<script>";
-                echo"$('.manage').click(function () {";
-                    echo "$('#manageOTItem').modal('show');";
-                 echo "});";
-            echo "</script>";                                             
-        
+    if(isset($_GET['deleteOTItem'])) {
+        $hr_id = $_GET['hr_id'];
+        $ot_id = $_GET['ot_id'];
+        $item_id = $_GET['deleteOTItem'];
+        $sqlDelete = "DELETE FROM ot_item WHERE ITEM_ID=$item_id";
+        $result = mysqli_query($conn, $sqlDelete);
+        header("location: pages/ot_item.php?hr_id=$hr_id&ot_id=$ot_id");
     }
     
 
@@ -149,13 +94,13 @@
         if(mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_array($result)) {
                 if($row['HR_ID'] == $hr_id && $row['WORK_DATE'] == $work_date && $row['OT_ID'] == $ot_id) {
-                    if($row['WORK_FROM'] >= $work_from  && $row['WORK_TO'] <=  $work_to) {
-                        $err = "เกิดข้อผิดพลาด เนื่องจากช่วงเวลาซ้ำ1";
-                    } elseif($row['WORK_FROM'] <= $work_from  && $row['WORK_TO'] <=  $work_to) {
-                        $err = "เกิดข้อผิดพลาด เนื่องจากช่วงเวลาซ้ำ2";
-                    } elseif($row['WORK_FROM'] >= $work_from  && $row['WORK_TO'] >=  $work_to) { 
-                        $err = "เกิดข้อผิดพลาด เนื่องจากช่วงเวลาซ้ำ3";
+                    if($row['WORK_FROM'] >= $work_from  && $row['WORK_FROM'] >= $work_to) {
+                        $err = "";
+                    } elseif($row['WORK_TO'] <= $work_from  && $row['WORK_TO'] <=  $work_to) {
+                        $err = "";
                     }
+                } else {
+                    $err = "เกิดข้อผิดพลาด เนื่องจากเพิ่มช่วงเวลาซ้ำ";
                 }
             }
         }

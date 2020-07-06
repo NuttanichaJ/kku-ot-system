@@ -451,8 +451,8 @@
 
     <!-- Ajax data Search -->
     <script>
-        $(document).ready(function () {
-            $('#search_text').keyup(function(){
+        $(document).ready(function() {
+            $('#search_text').keyup(function() {
                 var txt = $(this).val();
                 if(txt != '') {
 
@@ -470,8 +470,6 @@
                 }
             });     
         });
-        
-
     </script>
 
 
@@ -495,6 +493,8 @@
         })
 
     </script>
+
+
 </body>
 
 </html>
