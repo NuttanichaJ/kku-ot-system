@@ -30,6 +30,7 @@
         $otItem_id = $_POST['otItem_id'];
         $work_date = $_POST['datepick'];
         $create_by = $_SESSION['login_userName'];
+        $create_id = $_SESSION['login_userID'];
         date_default_timezone_set('asia/bangkok');
         $create_date = date("Y-m-d H:i:s");
         $hr_id = 1;
@@ -47,8 +48,8 @@
             showErr($err);
         } else {
             $amount = calculateAmount($ot_type, $work_from, $work_to, $ot_rate);
-            $sqlInsert = "INSERT INTO ot_item(ITEM_ID, OT_ID, OT_TYPE, ITEM_STATUS, HR_ID, WORK_DATE, WORK_FROM, WORK_TO, AMOUNT, CREATE_BY, CREATE_DATE) 
-                        VALUES ('$otItem_id','$ot_id','$ot_type', '5', $hr_id, '$work_date', '$work_from', '$work_to', '$amount', '$create_by', '$create_date')";
+            $sqlInsert = "INSERT INTO ot_item(ITEM_ID, OT_ID, OT_TYPE, ITEM_STATUS, HR_ID, WORK_DATE, WORK_FROM, WORK_TO, AMOUNT, CREATE_BY, CREATE_DATE, CREATE_ID) 
+                        VALUES ('$otItem_id','$ot_id','$ot_type', '5', $hr_id, '$work_date', '$work_from', '$work_to', '$amount', '$create_by', '$create_date', '$create_id)";
             mysqli_query($conn, $sqlInsert);
         }
        

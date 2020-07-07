@@ -13,17 +13,17 @@
     }
     
     //INSERT project
-    $ot_id = $create_by = $project_name = $create_date = "";
     
     if(isset($_POST["addproject"])) {
         
         $ot_id = $_POST["txtOT_ID"];
         $project_name = trim($_POST["txtProject_name"]);
         $create_by = trim($_POST["txtCreate_by"]);
-
+        $create_id = $_SESSION['login_userID'];                
         date_default_timezone_set('asia/bangkok');
         $create_date = date("Y/m/d H:i:s");
-        $sqlInsert = "INSERT INTO ot_project(OT_ID, OT_NAME, CREATE_BY, CREATE_DATE) VALUES ('$ot_id', '$project_name', '$create_by', '$create_date')";
+        $create_user_text = $_SESSION['login_hrName'];
+        $sqlInsert = "INSERT INTO ot_project(OT_ID, OT_NAME, CREATE_BY, CREATE_DATE, CRAETE_ID, CREATE_USER_TEXT) VALUES ('$ot_id', '$project_name', '$create_by', '$create_date', '$create_id', '$create_user_text')";
         mysqli_query($conn, $sqlInsert);
     }
 

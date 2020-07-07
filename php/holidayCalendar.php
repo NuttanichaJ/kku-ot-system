@@ -142,10 +142,11 @@
             $holiday_desc = trim($_POST["holiday_desc"]);
             $can_work = trim($_POST["can_work"]);
             $create_by = $_SESSION['login_userName'];
+            $create_id = $_SESSION['login_userID'];
             $holiday_date = $_POST["date_pick"];
             date_default_timezone_set('asia/bangkok');
             $create_date = date("Y-m-d H:i:s");
-            $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK,CREATE_BY, CREATE_DATE) VALUES ('1','$holiday_date','$holiday_desc', '$can_work', '$create_by', '$create_date')";
+            $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK,CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('1','$holiday_date','$holiday_desc', '$can_work', '$create_by', '$create_date', '$create_id' )";
             mysqli_query($conn, $sqlInsert);
 
            

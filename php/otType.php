@@ -19,12 +19,13 @@
         $ot_type = $_POST['txtOT_TYPE'];
         $ottype_name = trim($_POST["txtOT_TYPE_NAME"]);
         $create_by = $_SESSION['login_userName'];
+        $create_id = $_SESSION['login_userID'];
         $ottype_rate = trim($_POST['otType_rate']);
 
         date_default_timezone_set('asia/bangkok');
         $create_date = date("Y/m/d H:i:s");
 
-        $sqlInsert = "INSERT INTO ot_type(OTTYPE_ID, OT_TYPE, OTTYPE_NAME, OTTYPE_RATE, CREATE_BY, CREATE_DATE) VALUES ('$ottype_id', '$ot_type', '$ottype_name', $ottype_rate, '$create_by', '$create_date')";
+        $sqlInsert = "INSERT INTO ot_type(OTTYPE_ID, OT_TYPE, OTTYPE_NAME, OTTYPE_RATE, CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('$ottype_id', '$ot_type', '$ottype_name', $ottype_rate, '$create_by', '$create_date', '$create_id')";
         mysqli_query($conn, $sqlInsert);
     }
 
