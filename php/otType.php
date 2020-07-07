@@ -18,7 +18,7 @@
         $ottype_id = $_POST["txtOT_TYPE_ID"];
         $ot_type = $_POST['txtOT_TYPE'];
         $ottype_name = trim($_POST["txtOT_TYPE_NAME"]);
-        $create_by = trim($_POST["txtCreate_by"]);
+        $create_by = $_SESSION['login_userName'];
         $ottype_rate = trim($_POST['otType_rate']);
 
         date_default_timezone_set('asia/bangkok');
@@ -37,9 +37,8 @@
      if(isset($_POST['edit_otType'])) {
         $ottype_id = trim($_POST["txtOT_TYPE_ID"]);
         $ottype_name = trim($_POST["txtOT_TYPE_NAME"]);
-        $create_by = trim($_POST["txtCreate_by"]);
         $ottype_rate = trim($_POST['otType_rate']);
-        $sqlUpdate = "UPDATE ot_type SET OTTYPE_NAME = '$ottype_name', CREATE_BY = '$create_by', OTTYPE_RATE = '$ottype_rate'
+        $sqlUpdate = "UPDATE ot_type SET OTTYPE_NAME = '$ottype_name', OTTYPE_RATE = '$ottype_rate'
                         WHERE OTTYPE_ID = $ottype_id";
         mysqli_query($conn, $sqlUpdate);
     } 

@@ -3,8 +3,9 @@
     require_once '../config.php';
     require_once '../holidayCalendar.php';
 
-
-
+    if (!isset( $_SESSION['login_userName'])) {
+        header('location: login_page.php');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +79,7 @@
 
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item nav-logout d-none d-md-block">
-                            <button class="btn btn-sm btn-dark">ออกจากระบบ</button>
+                            <a href="index.php?logout='1'" class="btn btn-sm btn-dark">ออกจากระบบ</a>
                         </li>
 
                         <li class="nav-item nav-logout d-none d-lg-block">

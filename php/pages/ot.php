@@ -4,6 +4,10 @@
     require_once '../editProject.php';
     require_once '../print.php';
 
+    if (!isset($_SESSION['login_userName'])) {
+        header('location: login_page.php');
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +79,7 @@
 
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item nav-logout d-none d-md-block">
-                            <button class="btn btn-sm btn-dark">ออกจากระบบ</button>
+                            <a href="index.php?logout='1'" class="btn btn-sm btn-dark">ออกจากระบบ</a>
                         </li>
 
                         <li class="nav-item nav-logout d-none d-lg-block">
@@ -239,8 +243,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-sm-6 control-label"
-                                                                    for="inputDate">ชื่อผู้จัดทำโครงการ:</label>
+                                                                <label class="col-sm-6 control-label">ชื่อผู้จัดทำโครงการ:</label>
                                                                 <div class="col-sm-10">
                                                                     <input type="text" name="txtCreate_by"
                                                                         class="form-control border border-secondary"

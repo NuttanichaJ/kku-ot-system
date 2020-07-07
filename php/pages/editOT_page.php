@@ -4,6 +4,10 @@
     require_once '../editOT.php';
     require_once '../otCalendar.php';
 
+    if (!isset($_SESSION['login_userName'])) {
+        header('location: login_page.php');
+    }
+
     $ot_id = $_GET['edit_id'];
     $sql = "SELECT * FROM ot_project WHERE OT_ID ='$ot_id'";
 
@@ -88,7 +92,7 @@
 
                     <ul class="navbar-nav navbar-nav-right">
                         <li class="nav-item nav-logout d-none d-md-block">
-                            <button class="btn btn-sm btn-dark">ออกจากระบบ</button>
+                            <a href="index.php?logout='1'" class="btn btn-sm btn-dark">ออกจากระบบ</a>
                         </li>
 
                         <li class="nav-item nav-logout d-none d-lg-block">
@@ -358,70 +362,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- End modal: Add OT-->
-
-                                        <!-- modal: Edit OT -->
-                                        <div id="manageOTItem" class="modal fade" tabindex="-1" role="dialog"
-                                            aria-labelledby="modalLabel" area-hidden="true" le="display: block;">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h3 id="myModalLabel">แก้ไข</h3>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-hidden="true">×</button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form class="needs-validation" method="post">
-                                                            <input id='hr_id'>
-                                                            <table class="table table-striped table-bordered">
-                                                                <thead>
-                                                                    <tr class="text-center">
-                                                                        <th>วันที่</th>
-                                                                        <th>เวลาเข้า</th>
-                                                                        <th>เวลาออก</th>
-                                                                        <th>การเบิก</th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <?php 
-
-
-                                                                            
-                                                                                
-                                                                            
-                                                                        
-                                                                        // $sql = "SELECT WORK_DATE, WORK_FROM, WORK_TO, AMOUNT as total FROM ot_item WHERE HR_ID=$hr_id AND OT_ID = $ot_id";
-                                                                        // if($result = mysqli_query($conn, $sql)) {
-                                                                        //     if(mysqli_num_rows($result) > 0) {
-                                                                        //         while($row = mysqli_fetch_array($result_type)){
-                                                                        //         echo "<tr>";
-                                                                        //             echo "<td>" . $row['WORK_DATE'] . "</td>";
-                                                                        //             echo "<td>" . $row['WORK_FROM'] . "</td>";
-                                                                        //             echo "<td>" . $row['WORK_TO'] . "</td>";
-                                                                        //             echo "<td><a href='../editOT.php?deleteOTItem=" . $row['OT_ID'] . "' class='text-danger'
-                                                                        //                 onClick='return checkDelete();'><i class='mdi mdi-delete'></i> ลบ</a></td>";
-                                                                        //         echo "</tr>";
-                                                                        //         }
-                                                                        //     }
-                                                                        // }    
-
-                                                                    ?>
-                                                                </tbody>
-                                                            </table>
-                                                            <div class="modal-footer">
-                                                                <button type="button"
-                                                                    class="btn btn-success">ตกลง</button>
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <!-- End modal: Edit OT-->
+                                        <!-- End modal: Add OTITEM-->
                                     </div>
                                 </div>
                             </div>
