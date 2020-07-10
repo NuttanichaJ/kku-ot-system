@@ -7,6 +7,7 @@
     if (!isset($_SESSION['login_userName'])) {
         header('location: login_page.php');
     }
+    $userID = $_SESSION['login_userID'];
 
     $ot_id = $_GET['edit_id'];
     $sql = "SELECT * FROM ot_project WHERE OT_ID ='$ot_id'";
@@ -15,6 +16,7 @@
         if(mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_array($result);
     }
+
 ?>
 
 
@@ -30,7 +32,6 @@
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
-    <link rel="stylesheet" href="style.css"/>
 
     <link rel="stylesheet" href="../../assets/css/editOT.css">
     <link rel="stylesheet" href="../../assets/css/select-style.css" />
@@ -307,7 +308,7 @@
                                                                     <?php 
                                                                         echo '<select class="mdb-select md-form" name="ot_type" required>';
                                                                         
-                                                                        $sqlOtType = "SELECT OT_TYPE, OTTYPE_RATE, OTTYPE_NAME FROM ot_type";
+                                                                        $sqlOtType = "SELECT OT_TYPE, OTTYPE_RATE, OTTYPE_NAME FROM ot_type WHERE CREATE_ID = '$userID'";
 
 
                                                                         if($result_type = mysqli_query($conn, $sqlOtType)) {

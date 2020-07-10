@@ -24,7 +24,7 @@
     }
 
     // Today
-    $today = date('Y-m-j', time());
+    $today = date('Y-m-d', time());
 
     // For H3 title
     $_SESSION['html_title'] = date('M Y', $timestamp);

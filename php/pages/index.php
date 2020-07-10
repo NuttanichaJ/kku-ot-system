@@ -137,10 +137,10 @@
                                             
                                             if(isset($_POST["search"])) {
                                                 $search = trim($_POST["search"]);
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project 
-                                                  WHERE OT_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT OT_ID, OT_NAME, TOTAL_AMOUNT, CCREATE_USER_TEXT, CREATE_DATE FROM ot_project 
+                                                  WHERE OT_NAME LIKE '%".$search."%' OR CREATE_USER_TEXT LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
                                               } else {
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT OT_ID, OT_NAME, TOTAL_AMOUNT, CREATE_USER_TEXT, CREATE_DATE FROM ot_project ORDER BY CREATE_DATE DESC";
                                               }
                         
                                             if($result = mysqli_query($conn, $sql)) {
@@ -151,6 +151,7 @@
                                                             echo "<tr class='bg-primary text-white text-center'>";
                                                                 echo "<th>รหัส</th>";
                                                                 echo "<th>โครงการ</th>";
+                                                                echo "<th>ยอดรวม</th>";
                                                                 echo "<th>ผู้จัดทำรายการ</th>";
                                                                 echo "<th>วันที่สร้างโครงการ</th>";
                                                                 
@@ -164,11 +165,12 @@
                                                             echo "<tr>";
                                                                 echo "<td>" . $row['OT_ID'] . "</td>";
                                                                 echo "<td>" . $row['OT_NAME'] . "</td>";
-                                                                echo "<td>" . $row['CREATE_BY'] . "</td>";
+                                                                echo "<td>" . $row['TOTAL_AMOUNT'] . "</td>";
+                                                                echo "<td>" . $row['CREATE_USER_TEXT'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_DATE'] . "</td>";
                                                                 
                                                                 echo " <td align='center'>";
-                                                                    echo "<a href='editOT_page.php?edit_id=" . $row['OT_ID'] . "' class='text-primary' ><i
+                                                                    echo "<a href='view_summary.php?edit_id=" . $row['OT_ID'] . "' class='text-primary' ><i
                                                                     class='mdi mdi-magnify'></i> เรียกดู</a> ";
                                                                 echo "</td>"; 
                                                             echo "</tr>";

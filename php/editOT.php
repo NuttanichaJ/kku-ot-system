@@ -45,17 +45,10 @@
         $ot_type = $exploded_value[0];
         $ot_rate = $exploded_value[1];
 
-        //find HR information
-        $sql = "SELECT  NAME, SURNAME, PREFIX_2 FROM hr_master WHERE HR_ID = $hr_id";
-        $result = mysqli_query($conn, $sql);
-        if(mysqli_num_rows($result_hrName) == 1) {
-            $row = mysqli_fetch_array($result);
-            $hr_name = $row['HR_NAME'];
-            $hr_surname = $row['HR_SURNAME'];
-            $hr_position = $row['PREFIX_2'];
-        }
 
         $err = check($conn, $hr_id, $work_date, $work_from, $work_to, $ot_id);
+
+
         if(empty($_POST['hrID_value'])) {
             $err = 'กรุณาเลือกชื่อบุคลากร';
         }
@@ -63,6 +56,16 @@
         if(!empty($err)) {
             showErr($err);
         } else {
+            //find HR information
+            $sql = "SELECT HR_NAME, HR_SURNAME, PREFIX_2 FROM hr_master WHERE HR_ID = '$hr_id'";
+            $result = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($result) == 1) {
+                $row = mysqli_fetch_array($result);
+                $hr_name = $row['HR_NAME'];
+                $hr_surname = $row['HR_SURNAME'];
+                $hr_position = $row['PREFIX_2'];
+            }
+            
             $amount = calculateAmount($ot_type, $work_from, $work_to, $ot_rate);
             $sqlInsert = "INSERT INTO ot_item(ITEM_ID, OT_ID, OT_TYPE, ITEM_STATUS, HR_ID, NAME, SURNAME, POSITION_NAME, WORK_DATE, WORK_FROM, WORK_TO, AMOUNT, CREATE_BY, CREATE_DATE, CREATE_ID) 
                         VALUES ('$otItem_id','$ot_id','$ot_type', '5', '$hr_id', '$hr_name', '$hr_surname', '$hr_position', '$work_date', '$work_from', '$work_to', '$amount', '$create_by', '$create_date', '$create_id')";
@@ -139,12 +142,16 @@
         if(mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_array($result)) {
                 if ($row['WORK_DATE'] == $work_date) {
-                    if($row['WORK_FROM'] >= $work_from  && $row['WORK_FROM'] >= $work_to) {
-                        $err = "";
-                    } elseif($row['WORK_TO'] <= $work_from  && $row['WORK_TO'] <=  $work_to) {
-                        $err = "";
-                    } else {
-                        $err = "เกิดข้อผิดพลาด เนื่องจากเพิ่มช่วงเวลาซ้ำ";
+                    if( $work_from < $work_to) {
+                        if($row['WORK_FROM'] >= $work_from  && $row['WORK_FROM'] >= $work_to) {
+                            $err = "";
+                        } elseif($row['WORK_TO'] <= $work_from  && $row['WORK_TO'] <=  $work_to) {
+                            $err = "";
+                        } else {
+                            $err = "เกิดข้อผิดพลาด เนื่องจากเพิ่มช่วงเวลาซ้ำ";
+                        }
+                    }  else {
+                        $err = "เกิดข้อผิดพลาด เนื่องจากเวลา";
                     }
                 }
             }

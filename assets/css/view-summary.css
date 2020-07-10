@@ -1,0 +1,25 @@
+body {
+    font-family: 'Kanit' !important;
+    font-size: 14px;
+    margin: 0;
+}
+
+
+.container-2 .view-table {
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        height: 100%;
+    }
+    .container-2 .view-table tr th {
+            background: rgb(0,27,72);
+            background: linear-gradient(90deg, rgba(0,27,72,1) 0%, rgba(2,69,122,1) 100%);
+            font-weight: lighter;
+        }
+
+.page-header p {
+    font-size: 20px;
+    color: green;  
+}
+
+
