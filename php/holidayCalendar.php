@@ -1,8 +1,10 @@
 <?php      
     require_once 'config.php';
 
+    $userID = $_SESSION['login_userID'];
     
-    $sql_holiday = "SELECT * FROM ot_holiday";
+    
+    $sql_holiday = "SELECT * FROM ot_holiday WHERE CREATE_ID = $userID AND FACULTY_ID =" .getFacultyId($conn);
     
     date_default_timezone_set('asia/bangkok');
 
@@ -160,16 +162,21 @@
         header("location: holiday.php");
     }
 
-    function getFacultyId($conn, $hr_id)
+    function getFacultyId($conn)
     {
+        $user_HRID = $_SESSION['login_hrID'];
         $fac_id="";
-        if($hr_id!=""){
-	        $sql="select * from hr_master where HR_ID=".$hr_id;
-            $result = mysqli_query($conn, $sql);
-            $row = mysqli_fetch_assoc($result);
-	        $fac_id=$row['FACULTY_ID'];
-	    return $fac_id;
-        }   
+        if($user_HRID != ""){
+
+	        $sql="select * from hr_master where HR_ID=".$user_HRID;
+	        if($result = mysqli_query($conn, $sql)) {
+                if(mysqli_num_rows($result) == 1) {
+                    $row = mysqli_fetch_array($result);
+                    $fac_id = $row['FACULTY_ID'];
+                }
+            }
+	        return $fac_id;
+        }
     }
     
     

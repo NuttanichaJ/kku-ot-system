@@ -8,6 +8,8 @@
         header('location: login_page.php');
     }
 
+    $userID = $_SESSION['login_userID'];
+
 ?>
 
 <!DOCTYPE html>
@@ -133,24 +135,17 @@
                                                 data-toggle="modal" data-target="#modalAdd" href="../editProject.php">
                                                 เพิ่มใหม่</button>
 
-                                            <label class="select-branch mr-2"> สังกัด:</label>
-                                            <select class="mdb-select md-form">
-                                                <option value="" disabled selected>Choose your option</option>
-                                                <option value="1">Option 1</option>
-                                                <option value="2">Option 2</option>
-                                                <option value="3">Option 3</option>
-                                            </select>
-
                                         </div>
 
                                         <?php
                                             
                                             if(isset($_POST["search"])) {
                                                 $search = trim($_POST["search"]);
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project 
-                                                  WHERE OT_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_USER_TEXT, CREATE_DATE, CREATE_ID FROM ot_project 
+                                                  WHERE (OT_NAME LIKE '%".$search."%' AND CREATE_ID = $userID) OR (CREATE_USER_TEXT LIKE '%".$search."%' AND CREATE_ID = $userID) ORDER BY CREATE_DATE DESC";
                                               } else {
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_USER_TEXT, CREATE_DATE FROM ot_project ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_USER_TEXT, CREATE_DATE FROM ot_project
+                                                WHERE CREATE_ID = $userID ORDER BY CREATE_DATE DESC";
                                               }
                         
                                             if($result = mysqli_query($conn, $sql)) {

@@ -13,7 +13,7 @@
 
         date_default_timezone_set('asia/bangkok');
         $update_date = date("Y/m/d H:i:s");
-        $sqlUpdate = "UPDATE ot_project SET OT_NAME = '$project_name', OT_OWNER = '$ot_owner', UPDATE_BY = '$update_by', UPDATE_DATE = '$update_date'
+        $sqlUpdate = "UPDATE ot_project SET OT_NAME = '$project_name', OT_OWNER = '$ot_owner', SIGNER = '$signer', UPDATE_BY = '$update_by', UPDATE_DATE = '$update_date'
                         WHERE OT_ID = $ot_id";
         mysqli_query($conn, $sqlUpdate);
     } 
@@ -34,7 +34,8 @@
         date_default_timezone_set('asia/bangkok');
         $create_date = date("Y-m-d H:i:s");
         $hr_id = $_POST['hrID_value'];
-        echo $hr_id = $_POST['hrID_value'];
+        
+        
         //get time work from-to
         $work_from = $_POST['work_from'];
         $work_to = $_POST['work_to'];
@@ -43,6 +44,16 @@
         $exploded_value = explode('|', $value);
         $ot_type = $exploded_value[0];
         $ot_rate = $exploded_value[1];
+
+        //find HR information
+        $sql = "SELECT  NAME, SURNAME, PREFIX_2 FROM hr_master WHERE HR_ID = $hr_id";
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result_hrName) == 1) {
+            $row = mysqli_fetch_array($result);
+            $hr_name = $row['HR_NAME'];
+            $hr_surname = $row['HR_SURNAME'];
+            $hr_position = $row['PREFIX_2'];
+        }
 
         $err = check($conn, $hr_id, $work_date, $work_from, $work_to, $ot_id);
         if(empty($_POST['hrID_value'])) {
@@ -53,10 +64,22 @@
             showErr($err);
         } else {
             $amount = calculateAmount($ot_type, $work_from, $work_to, $ot_rate);
-            $sqlInsert = "INSERT INTO ot_item(ITEM_ID, OT_ID, OT_TYPE, ITEM_STATUS, HR_ID, WORK_DATE, WORK_FROM, WORK_TO, AMOUNT, CREATE_BY, CREATE_DATE, CREATE_ID) 
-                        VALUES ('$otItem_id','$ot_id','$ot_type', '5', '$hr_id', '$work_date', '$work_from', '$work_to', '$amount', '$create_by', '$create_date', '$create_id')";
+            $sqlInsert = "INSERT INTO ot_item(ITEM_ID, OT_ID, OT_TYPE, ITEM_STATUS, HR_ID, NAME, SURNAME, POSITION_NAME, WORK_DATE, WORK_FROM, WORK_TO, AMOUNT, CREATE_BY, CREATE_DATE, CREATE_ID) 
+                        VALUES ('$otItem_id','$ot_id','$ot_type', '5', '$hr_id', '$hr_name', '$hr_surname', '$hr_position', '$work_date', '$work_from', '$work_to', '$amount', '$create_by', '$create_date', '$create_id')";
             $insert = mysqli_query($conn, $sqlInsert);
-            if($insert) {
+            
+            //update ot_project
+            //calculate total amount
+            $total_amount = calTotal_amount($conn, $ot_id);
+
+            date_default_timezone_set('asia/bangkok');
+            $update_date = date("Y/m/d H:i:s");
+            
+            $sqlUpdate = "UPDATE ot_project SET TOTAL_AMOUNT = '$total_amount', UPDATE_BY = '$create_by', UPDATE_DATE = '$update_date'
+                        WHERE OT_ID = $ot_id";
+            $update = mysqli_query($conn, $sqlUpdate);
+            
+            if($insert && $update) {
                 header("location: editOT_page.php?edit_id=$ot_id");
             }
         }
@@ -68,8 +91,22 @@
         $hr_id = $_GET['hr_id'];
         $item_id = $_GET['deleteOTItem'];
         $sqlDelete = "DELETE FROM ot_item WHERE ITEM_ID=$item_id";
-        $result = mysqli_query($conn, $sqlDelete);
-        header("location: pages/ot_item.php?hr_id=$hr_id&ot_id=$ot_id");
+        $delete = mysqli_query($conn, $sqlDelete);
+
+        //update ot_project
+        //calculate total amount
+        $total_amount = calTotal_amount($conn, $ot_id);
+
+        date_default_timezone_set('asia/bangkok');
+        $update_date = date("Y/m/d H:i:s");
+        $update_by = $_SESSION['login_userName'];
+        $sqlUpdate = "UPDATE ot_project SET TOTAL_AMOUNT = '$total_amount', UPDATE_BY = '$update_by', UPDATE_DATE = '$update_date'
+                        WHERE OT_ID = $ot_id";
+        $update = mysqli_query($conn, $sqlUpdate);
+            
+        if($delete && $update) {
+            header("location: pages/ot_item.php?hr_id=$hr_id&ot_id=$ot_id");
+        }
     }
         
 
@@ -116,5 +153,14 @@
 
         return $err;
     }
+
+    function calTotal_amount($conn, $ot_id) {
+        $sum_allProject = "SELECT SUM(AMOUNT) as total FROM ot_item WHERE OT_ID = $ot_id";
+        $query_sum = mysqli_query($conn, $sum_allProject);
+        $result_sum = mysqli_fetch_array($query_sum);
+        $total_amount = $result_sum['total'];
+        return $total_amount;
+    }
+    
 
  ?>       

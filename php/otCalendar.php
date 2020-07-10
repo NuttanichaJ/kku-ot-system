@@ -2,9 +2,8 @@
         
     require_once 'config.php';
 
-    
 
-    $sql_holiday = "SELECT HOLIDAY_DATE, CAN_WORK FROM ot_holiday";
+    $sql_holiday = "SELECT HOLIDAY_DATE, CAN_WORK FROM ot_holiday WHERE FACULTY_ID =" .getFacultyId($conn);
     
     date_default_timezone_set('asia/bangkok');
 
@@ -142,5 +141,22 @@
             // Prepare for new week
             $week = '';
             }
-        }  
+        }
+        
+    function getFacultyId($conn)
+    {
+        $user_HRID = $_SESSION['login_hrID'];
+        $fac_id="";
+        if($user_HRID != ""){
+
+	        $sql="select * from hr_master where HR_ID=".$user_HRID;
+	        if($result = mysqli_query($conn, $sql)) {
+                if(mysqli_num_rows($result) == 1) {
+                    $row = mysqli_fetch_array($result);
+                    $fac_id = $row['FACULTY_ID'];
+                }
+            }
+	        return $fac_id;
+        }
+    }
 ?>

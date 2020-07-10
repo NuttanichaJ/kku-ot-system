@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css"/>
 
     <link rel="stylesheet" href="../../assets/css/editOT.css">
     <link rel="stylesheet" href="../../assets/css/select-style.css" />
@@ -112,12 +112,7 @@
                     <div class="page-header">
                         <h3 class="page-title">แก้ไขจัดทำแบบทำงานนอกเวลา</h3>
                         <p>จำนวนเงินรวม <?php 
-                                        $sum_allProject = "SELECT SUM(AMOUNT) as total FROM ot_item WHERE OT_ID = $ot_id";
-                                        $query_sum = mysqli_query($conn, $sum_allProject);
-                                        $result_sum = mysqli_fetch_array($query_sum);
-                                        $total_amount = $result_sum['total'];
-                                        echo $total_amount;
-                                        echo "<input type='hidden' name='total_amount' value= $total_amount >"
+                                        echo $row['TOTAL_AMOUNT'];
                                         ?> บาท</p>
 
                     </div>
@@ -283,13 +278,11 @@
                                                                                     $sql_hrName = "SELECT * FROM hr_master";
                                                                                     if($result_hrName = mysqli_query($conn, $sql_hrName)) {
                                                                                         if(mysqli_num_rows($result_hrName) > 0) {
-                                                                                            $count = 0;
                                                                                             while($row = mysqli_fetch_array($result_hrName)){
                                                                                                 echo '<div class="option">';
                                                                                                 echo "<input class='radio' type='radio' name='worker_name' value='". $row['HR_ID']."'/>";
                                                                                                 echo "<label>". $row['HR_ID'].": ". $row['HR_NAME']." ". $row['HR_SURNAME']."</label>";
                                                                                                 echo '</div>';
-                                                                            
                                                                                             }
                                                                                         }
                                                                                     }

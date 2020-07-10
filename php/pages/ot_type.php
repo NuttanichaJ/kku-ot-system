@@ -6,7 +6,7 @@
     if (!isset($_SESSION['login_userName'])) {
         header('location: login_page.php');
     }
-
+    $userID = $_SESSION['login_userID'];
 ?>
 
 <!DOCTYPE html>
@@ -140,9 +140,9 @@
                                                 $search = trim($_POST["search"]);
 
                                                 $sql = "SELECT * FROM ot_type 
-                                                  WHERE OTTYPE_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
+                                                  WHERE (OTTYPE_NAME LIKE '%".$search."%' AND CREATE_ID = $userID) OR (CREATE_ฺBY LIKE '%".$search."%' AND CREATE_ID = $userID) ORDER BY CREATE_DATE DESC";
                                               } else {
-                                                $sql = "SELECT * FROM ot_type ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT * FROM ot_type WHERE CREATE_ID = $userID ORDER BY CREATE_DATE DESC";
                                               }
                         
                                             if($result = mysqli_query($conn, $sql)) {
@@ -194,6 +194,8 @@
                                                                         class='mdi mdi-delete'></i> ลบ</a>";
                                                                 echo "</td>"; 
                                                             echo "</tr>";
+                                                        
+                                                        
                                                         }
                                                         echo "</tbody>";
                                                     echo "</table>";
@@ -260,17 +262,6 @@
                                                                         class="form-control border border-secondary"
                                                                         required>
                                                                     <div class="invalid-feedback">กรุณาใส่ เช่น กรณีวันปกติ/กรณีวันหยุดราชการ
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-sm-6 control-label"
-                                                                    for="inputDate">ผู้จัดทำรายการ:</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="text" name="txtCreate_by"
-                                                                        class="form-control border border-secondary"
-                                                                        required>
-                                                                    <div class="invalid-feedback">กรุณาใส่ชื่อผู้จัดทำ
                                                                     </div>
                                                                 </div>
                                                             </div>

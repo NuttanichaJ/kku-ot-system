@@ -8,7 +8,7 @@
         $ottype_id = $_GET['deleteOttype'];
         $sqlDelete = "DELETE FROM ot_type WHERE OTTYPE_ID=$ottype_id";
         $result = mysqli_query($conn, $sqlDelete);
-        header("location: pages/ot_type.php");
+        header("location: ot_type.php");
     }
     
     //INSERT project
@@ -28,7 +28,7 @@
         $sqlInsert = "INSERT INTO ot_type(OTTYPE_ID, OT_TYPE, OTTYPE_NAME, OTTYPE_RATE, CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('$ottype_id', '$ot_type', '$ottype_name', $ottype_rate, '$create_by', '$create_date', '$create_id')";
         $insert = mysqli_query($conn, $sqlInsert);
         if($insert) {
-            header("location: pages/ot_type.php");
+            header("location: ot_type.php");
         }
     }
 
