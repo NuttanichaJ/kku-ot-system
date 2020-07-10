@@ -10,7 +10,7 @@
 
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_array($result);
-            $_SESSION['login_hrName'] = $row['HR_NAME'] ."". $row['HR_SURNAME']; //create by
+            $_SESSION['login_hrName'] = $row['HR_NAME'] ." ". $row['HR_SURNAME']; //create by
             $_SESSION['login_userID'] = $row['USER_ID'];
             $_SESSION['login_hrID'] = $row['HR_ID'];
             $_SESSION['login_userName'] = $row['USER_NAME'];

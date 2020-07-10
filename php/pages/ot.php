@@ -150,7 +150,7 @@
                                                 $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project 
                                                   WHERE OT_NAME LIKE '%".$search."%' OR CREATE_BY LIKE '%".$search."%' ORDER BY CREATE_DATE DESC";
                                               } else {
-                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_BY, CREATE_DATE FROM ot_project ORDER BY CREATE_DATE DESC";
+                                                $sql = "SELECT OT_ID, OT_NAME, CREATE_USER_TEXT, CREATE_DATE FROM ot_project ORDER BY CREATE_DATE DESC";
                                               }
                         
                                             if($result = mysqli_query($conn, $sql)) {
@@ -174,7 +174,7 @@
                                                             echo "<tr>";
                                                                 echo "<td>" . $row['OT_ID'] . "</td>";
                                                                 echo "<td>" . $row['OT_NAME'] . "</td>";
-                                                                echo "<td>" . $row['CREATE_BY'] . "</td>";
+                                                                echo "<td>" . $row['CREATE_USER_TEXT'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_DATE'] . "</td>";
                                                                 echo "<td align='center'>";
                                                                     echo "<a href='../print.php?print_id=" . $row['OT_ID'] . "' data-toggle='modal'  data-target='#modalPrint' class='text-dark' ><i
@@ -243,12 +243,15 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-sm-6 control-label">ชื่อผู้จัดทำโครงการ:</label>
+                                                                <label class="col-sm-6 control-label">เจ้าของโครงการ:</label>
                                                                 <div class="col-sm-10">
-                                                                    <input type="text" name="txtCreate_by"
+                                                                    <input type="text" name="txtOT_owner"
                                                                         class="form-control border border-secondary"
-                                                                        required>
-                                                                    <div class="invalid-feedback">กรุณาใส่ชื่อผู้จัดทำ
+                                                                        value="<?php 
+                                                                        
+                                                                        echo $_SESSION['login_hrName'];
+                                                                        ?>" required>
+                                                                    <div class="invalid-feedback">กรุณาใส่เจ้าของโครงการ
                                                                     </div>
                                                                 </div>
                                                             </div>

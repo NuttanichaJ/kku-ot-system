@@ -26,7 +26,10 @@
         $create_date = date("Y/m/d H:i:s");
 
         $sqlInsert = "INSERT INTO ot_type(OTTYPE_ID, OT_TYPE, OTTYPE_NAME, OTTYPE_RATE, CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('$ottype_id', '$ot_type', '$ottype_name', $ottype_rate, '$create_by', '$create_date', '$create_id')";
-        mysqli_query($conn, $sqlInsert);
+        $insert = mysqli_query($conn, $sqlInsert);
+        if($insert) {
+            header("location: pages/ot_type.php");
+        }
     }
 
         $sql_maxID = "SELECT MAX(OTTYPE_ID) as maxottype_id FROM ot_type";

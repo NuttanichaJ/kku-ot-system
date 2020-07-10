@@ -112,8 +112,7 @@
            
             }
         }
-        
-      
+             
         // End of the week OR End of the month
         if ($str % 7 == 6 || $day == $day_count) {
 
@@ -128,15 +127,8 @@
             $week = '';
         }
     }
-    
-
-    
- 
-        
-        //INSERT holiday
-        $holiday_date = $holiday_desc = $can_work = $create_date = "";
-    
-        
+       
+        //INSERT holiday  
         if(isset($_POST["addholiday"])){
 
             $holiday_desc = trim($_POST["holiday_desc"]);
@@ -148,13 +140,15 @@
             $create_date = date("Y-m-d H:i:s");
             $fac_id = getFacultyId($conn, $_SESSION['login_hrID']);
             $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK,CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('$fac_id','$holiday_date','$holiday_desc', '$can_work', '$create_by', '$create_date', '$create_id' )";
-            mysqli_query($conn, $sqlInsert);
+            $insert = mysqli_query($conn, $sqlInsert);
 
-           
+            if($insert) {
+                header("location: holiday.php");
+            }
         }
 
 
-        //DELETE holiday
+    //DELETE holiday
     if(isset($_POST['deleteholiday'])) {
         
         //$create_by = trim($_POST["txtCreate_by"]);

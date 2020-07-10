@@ -30,16 +30,14 @@
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <!-- endinject -->
+    <link rel="stylesheet" href="style.css" />
 
     <link rel="stylesheet" href="../../assets/css/editOT.css">
+    <link rel="stylesheet" href="../../assets/css/select-style.css" />
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="../../assets/css/style.css" />
     <!-- End layout styles -->
-
-
-
-
 </head>
 
 <body>
@@ -117,7 +115,9 @@
                                         $sum_allProject = "SELECT SUM(AMOUNT) as total FROM ot_item WHERE OT_ID = $ot_id";
                                         $query_sum = mysqli_query($conn, $sum_allProject);
                                         $result_sum = mysqli_fetch_array($query_sum);
-                                        echo $result_sum['total'];
+                                        $total_amount = $result_sum['total'];
+                                        echo $total_amount;
+                                        echo "<input type='hidden' name='total_amount' value= $total_amount >"
                                         ?> บาท</p>
 
                     </div>
@@ -144,11 +144,11 @@
                                             </div>
 
                                             <div class="form-group d-flex">
-                                                <label class="control-label">ชื่อผู้จัดทำโครงการ:</label>
+                                                <label class="control-label">เจ้าของโครงการ:</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" name="txtCreate_by"
+                                                    <input type="text" name="txtOT_owner"
                                                         class="form-control border border-secondary"
-                                                        value="<?php echo $row['CREATE_BY']; ?>" required>
+                                                        value="<?php echo $row['OT_OWNER']; ?>" required>
                                                 </div>
                                                 <label class="control-label">&nbsp; &nbsp; ลงนาม:</label>
                                                 <div class="col-sm-4">
@@ -273,35 +273,44 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group"><label
-                                                                    class="col-sm-5 control-label">ชื่อ</label>
-                                                                <div class="col-sm-7">
-                                                                    <?php 
-                                                                        echo '<select class="mdb-select md-form" name="create_by" required>';
-                                                                        
-                                                                        // $sqlOtType = "SELECT OTTYPE_NAME, OTTYPE_RATE FROM ot_type";
-
-                                                                        // if($result_type = mysqli_query($conn, $sqlOtType)) {
-                                                                        //     if(mysqli_num_rows($result_type) > 0) {
+                                                            <div class="form-group">
+                                                                <label class="col-sm-5 control-label">ชื่อ</label>
+                                                                    <div class="col-sm-5">
+                                                                        <div class="select-box">
+                                                                            <div class="options-container">
+                                                                                <?php 
+                                                                     
+                                                                                    $sql_hrName = "SELECT * FROM hr_master";
+                                                                                    if($result_hrName = mysqli_query($conn, $sql_hrName)) {
+                                                                                        if(mysqli_num_rows($result_hrName) > 0) {
+                                                                                            $count = 0;
+                                                                                            while($row = mysqli_fetch_array($result_hrName)){
+                                                                                                echo '<div class="option">';
+                                                                                                echo "<input class='radio' type='radio' name='worker_name' value='". $row['HR_ID']."'/>";
+                                                                                                echo "<label>". $row['HR_ID'].": ". $row['HR_NAME']." ". $row['HR_SURNAME']."</label>";
+                                                                                                echo '</div>';
+                                                                            
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ?>
                                                                                 
-                                                                        //        echo '<option value="" disabled="" selected=""></option>';
-
-                                                                        //         while($row = mysqli_fetch_array($result_type)){
-                                                                                     echo "<option value='aaa'>aaa</option>";
-                                                                        //         }
-                                                                        //     }
-                                                                        // }
-                                                                        
-                                                                        echo '</select>';
-                                                                    ?>
-                                                                    <div class="invalid-feedback">กรุณาเลือกชื่อ</div>
-                                                                </div>
-
+                                                                            </div>
+                                                                            <div class="selected">
+                                                                                กรุณาเลือกชื่อ
+                                                                            </div>
+                                                                            <input type='hidden' id='hrID_value' name='hrID_value'>
+                                                                            <div class="search-box">
+                                                                                <input type="text" placeholder="ค้นหา..." />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label class="col-sm-4 control-label">การเบิก</label>
                                                                 <div class="col-sm-7">
+                                                                                                                                         
                                                                     <?php 
                                                                         echo '<select class="mdb-select md-form" name="ot_type" required>';
                                                                         
@@ -329,8 +338,6 @@
                                                                         }
                                                                         echo '</select>';
                                                                     ?>
-                                                                    <div class="invalid-feedback">กรุณาเลือกการเบิก
-                                                                    </div>
 
                                                                 </div>
                                                             </div>
@@ -352,6 +359,7 @@
                                                                     <div class="invalid-feedback">กรุณาใส่เวลาออก</div>
                                                                 </div>
                                                             </div>
+
                                                             <div class="modal-footer">
                                                                 <button type="submit" id="addNewOTItem"
                                                                     name="addNewOTItem"
@@ -373,8 +381,8 @@
         </div>
     </div>
 
-
-
+    
+    <script src="../../assets/js/select.js"></script>
     <!-- plugins:js -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
@@ -384,7 +392,9 @@
     <script src="../../assets/js/hoverable-collapse.js"></script>
     <script src="../../assets/js/misc.js"></script>
     <!-- endinject -->
+    
     <script>
+        
         //check input !empty
         (function () {
             'use strict';
@@ -403,7 +413,8 @@
                 });
             }, false);
         })();
-
+       
+        
         // <!-- confirm delete -->
         function checkDelete() {
             return confirm('ต้องการลบใช่หรือไม่');
@@ -416,6 +427,7 @@
             $('#datepick').val(date);
             $('#addOTItem').modal('show');
         });
+
 
     </script>
 
