@@ -15,7 +15,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Plus Admin</title>
+    <title>ระบบงาน OT</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
@@ -83,7 +83,7 @@
                         </li>
 
                         <li class="nav-item nav-logout d-none d-lg-block">
-                            <a class="nav-link" href="../index.html">
+                            <a class="nav-link" href="index.php">
                                 <i class="mdi mdi-home-circle"></i>
                             </a>
                         </li>

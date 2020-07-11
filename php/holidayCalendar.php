@@ -82,7 +82,6 @@
                            '>" . $day .  "</div>"; 
                         }
         
-                    
                     } else {
                         $counter--;
                         if($date == $row["HOLIDAY_DATE"]) {
@@ -100,7 +99,6 @@
                     }
                 }
             
-               
             } else {
                 if ($today == $date) {
                     $week .= "<div class='today mdi mdi-pocket' name='date' id='date'
@@ -141,11 +139,17 @@
             date_default_timezone_set('asia/bangkok');
             $create_date = date("Y-m-d H:i:s");
             $fac_id = getFacultyId($conn, $_SESSION['login_hrID']);
-            $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK,CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('$fac_id','$holiday_date','$holiday_desc', '$can_work', '$create_by', '$create_date', '$create_id' )";
-            $insert = mysqli_query($conn, $sqlInsert);
 
-            if($insert) {
-                header("location: holiday.php");
+            $err = check($conn, $holiday_date, $fac_id);
+            if(!empty($err)) {
+                showErr($err);
+            } else {
+                $sqlInsert = "INSERT INTO ot_holiday(FACULTY_ID, HOLIDAY_DATE,HOLIDAY_DESC,CAN_WORK,CREATE_BY, CREATE_DATE, CREATE_ID) VALUES ('$fac_id','$holiday_date','$holiday_desc', '$can_work', '$create_by', '$create_date', '$create_id' )";
+                $insert = mysqli_query($conn, $sqlInsert);
+
+                if($insert) {
+                    header("location: holiday.php");
+                }
             }
         }
 
@@ -155,8 +159,8 @@
         
         //$create_by = trim($_POST["txtCreate_by"]);
         $holiday_date = $_POST["datepick"];
-        
-        $sqlDelete = "DELETE FROM ot_holiday WHERE HOLIDAY_DATE='$holiday_date'";
+        $fac_id = getFacultyId($conn);
+        $sqlDelete = "DELETE FROM ot_holiday WHERE FACULTY_ID = '$fac_id' AND HOLIDAY_DATE = '$holiday_date'";
         $result = mysqli_query($conn, $sqlDelete);
 
         header("location: holiday.php");
@@ -177,6 +181,24 @@
             }
 	        return $fac_id;
         }
+    }
+
+
+    function check($conn, $holiday_date, $fac_id) {
+        $err = "";
+
+        $sql = "SELECT * FROM ot_holiday WHERE FACULTY_ID = '$fac_id' AND HOLIDAY_DATE = '$holiday_date'";
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) == 1) {
+            $err = "วันที่ ".$holiday_date." มีการกำหนดวันหยุดไว้แล้ว";
+        }
+        return $err;
+    }
+
+    function showErr($err) {
+        echo '<script type="text/javascript">';
+        echo 'alert("'.$err.'")'; 
+        echo '</script>';
     }
     
     

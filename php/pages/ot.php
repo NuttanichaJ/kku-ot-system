@@ -19,7 +19,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Plus Admin</title>
+    <title>ระบบงาน OT</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
@@ -85,7 +85,7 @@
                         </li>
 
                         <li class="nav-item nav-logout d-none d-lg-block">
-                            <a class="nav-link" href="../index.html">
+                            <a class="nav-link" href="index.php">
                                 <i class="mdi mdi-home-circle"></i>
                             </a>
                         </li>
@@ -172,7 +172,7 @@
                                                                 echo "<td>" . $row['CREATE_USER_TEXT'] . "</td>";
                                                                 echo "<td>" . $row['CREATE_DATE'] . "</td>";
                                                                 echo "<td align='center'>";
-                                                                    echo "<a href='../print.php?print_id=" . $row['OT_ID'] . "' data-toggle='modal'  data-target='#modalPrint' class='text-dark' ><i
+                                                                    echo "<a type='button' class='print text-dark' data-ot-id =" . $row['OT_ID'] ." ><i
                                                                         class='mdi mdi-cloud-print-outline'></i>
                                                                         พิมพ์</a>";
                                                                 echo "</td>";
@@ -278,11 +278,10 @@
                                                     </div>
                                                     <!--Body-->
                                                     <div class="modal-body">
-                                                        <form class="needs-validation" id="print" method="POST"
-                                                            novalidate>
+                                                        <form class="needs-validation" id="print" method="POST">
                                                             <div class="form-group">
                                                                 <label class="sm-3  mr-2">ID:</label>
-                                                                <input type="text" name="txtOT_ID"
+                                                                <input type="text" name="txtOT_ID" id="txtOT_ID"
                                                                     class="border border-secondary" size="4" value="<?php echo '1'; ?>" disabled="disabled">
                                                             </div>
 
@@ -293,13 +292,13 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <div class="btn-print">
-                                                                    <button class="printForm" type="button" id="btnPrintRegisTimeForm01">1.บัญชีเวลาการปฏิบัติงานนอกเวลาราชการปกติ</button>
+                                                                    <button class="printForm" type="button" name="btnPrintRegisTimeForm01">1.บัญชีเวลาการปฏิบัติงานนอกเวลาราชการปกติ</button>
                                                                 </div>
                                                                 <div class="btn-print">
-                                                                    <button class="printForm" type="button" id="btnPrintRegisTimeForm01">2.หลักฐานการจ่ายเงินตอบแทนการปฏิบัติงานนอกเวลาราชการปกติ(ใบฟ้า)</button>
+                                                                    <button class="printForm" type="button" name="btnPrintRegisTimeForm02">2.หลักฐานการจ่ายเงินตอบแทนการปฏิบัติงานนอกเวลาราชการปกติ(ใบฟ้า)</button>
                                                                 </div>
                                                                 <div class="btn-print">
-                                                                    <button class="printForm" type="button" id="btnPrintRegisTimeForm01">3.แบบสรุปวันปฏิบัติงานนอกเวลาราชการปกติ</button>
+                                                                    <button class="printForm" type="button" name="btnPrintRegisTimeForm03">3.แบบสรุปวันปฏิบัติงานนอกเวลาราชการปกติ</button>
                                                                 </div>
                                                             </div>
 
@@ -375,6 +374,19 @@
                 }
             });     
         });
+    </script>
+
+    <script>
+        $('.print').click(function () {
+            //get data from edit
+            var ot_id = $(this).attr('data-ot-id');
+
+            //set value to modal
+            $('#txtOT_ID').val(ot_id);
+
+            $('#modalPrint').modal('show');
+        })
+
     </script>
 </body>
 

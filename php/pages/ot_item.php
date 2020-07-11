@@ -16,7 +16,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Plus Admin</title>
+    <title>ระบบงาน OT</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
@@ -82,7 +82,7 @@
                         </li>
 
                         <li class="nav-item nav-logout d-none d-lg-block">
-                            <a class="nav-link" href="../index.html">
+                            <a class="nav-link" href="index.php">
                                 <i class="mdi mdi-home-circle"></i>
                             </a>
                         </li>
@@ -105,14 +105,13 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="container">
+                                        
                                         <?php
                                             $hr_id = $_GET['hr_id'];
                                             $ot_id = $_GET['ot_id'];
-                                            $sql = "SELECT ITEM_ID, WORK_DATE, WORK_FROM, WORK_TO, AMOUNT FROM ot_item WHERE HR_ID=$hr_id AND OT_ID = $ot_id";
-                        
+                                            $sql = "SELECT * FROM ot_item WHERE HR_ID=$hr_id AND OT_ID=$ot_id";
                                             if($result = mysqli_query($conn, $sql)) {
                                                 if(mysqli_num_rows($result) > 0) {
-                                                    
                                                     echo "<table class='table table-striped table-bordered' id='table-data'>";
                                                         echo "<thead>";
                                                             echo "<tr class='bg-primary text-white text-center'>";

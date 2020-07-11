@@ -45,9 +45,9 @@
         $ot_type = $exploded_value[0];
         $ot_rate = $exploded_value[1];
 
-
         $err = check($conn, $hr_id, $work_date, $work_from, $work_to, $ot_id);
 
+        
 
         if(empty($_POST['hrID_value'])) {
             $err = 'กรุณาเลือกชื่อบุคลากร';
@@ -130,14 +130,16 @@
 
         } elseif($ot_type == 3) {
             $time_work = TimeDiff($work_from,$work_to);
-            return $amount = $ot_rate*$time_work;
+            $amount = $ot_rate*$time_work;
+            
+            return number_format($amount , 2 );
         }
     }
 
     function check($conn, $hr_id, $work_date, $work_from, $work_to, $ot_id) {
         $err = "";
 
-        $sql = "SELECT WORK_DATE, WORK_FROM, WORK_TO, HR_ID, OT_ID FROM ot_item";
+        $sql = "SELECT WORK_DATE, WORK_FROM, WORK_TO FROM ot_item WHERE OT_ID=$ot_id AND HR_ID = $hr_id";
         $result = mysqli_query($conn, $sql);
         if(mysqli_num_rows($result) > 0) {
             while($row = mysqli_fetch_array($result)) {
