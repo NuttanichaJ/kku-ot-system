@@ -5,16 +5,18 @@
 
 body {
     font-size: 120%;
-    background: #f8f8f8;
+    background: rgb(189, 196, 195);
+    
 }
 
 .header {
     width: 30%;
     margin: 50px auto 0px;
     color: white;
-    background: #5f9ea0;
+    background: rgb(31,78,90);
+    background: linear-gradient(90deg, rgba(31,78,90,1) 0%, rgba(2,147,133,1) 93%);
     text-align: center;
-    border: 1px solid #b0c4de;
+    border: 1px solid  rgb(31,78,90);
     border-bottom: none;
     border-radius: 10px 10px 0px 0px;
     padding: 20px;
@@ -24,23 +26,11 @@ form {
     width: 30%;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #b0c4de;
+    border: 1px solid rgb(31,78,90);
     background: white;
     border-radius: 0px 0px 10px 10px;
 }
 
-.homeheader {
-    text-align: center;
-    font-size: 5rem;
-}
-
-.homecontent {
-    text-align: center;
-    padding-top: 3rem;
-    width: 100%;
-    background: #ccc;
-    height: 100vh;
-}
 
 .form-group {
     margin: 10px 0px 10px 0px;
@@ -65,7 +55,8 @@ form {
     padding: 10px;
     font-size: 15px;
     color: white;
-    background: #5f9ea0;
+    background: rgb(31,78,90);
+    background: linear-gradient(90deg, rgba(31,78,90,1) 0%, rgba(2,147,133,1) 93%);
     border: none;
     border-radius: 5px;
 }
